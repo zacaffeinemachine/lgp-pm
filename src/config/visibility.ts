@@ -1,0 +1,39 @@
+// -----------------------------------------------------------------------
+//  Visibility controls — the one file you edit to release material.
+// -----------------------------------------------------------------------
+//
+//  Comment out an entry to hide it from students; uncomment to reveal.
+//  Changes take effect on the next `npm run build` (and redeploy).
+//
+//  Rules of the game:
+//    • A hidden day is hidden from the home page. Its landing page
+//      and every one of its sub-pages show a polite "not yet released"
+//      message if a student URL-guesses them.
+//    • A hidden page is hidden from the day's page list and from the
+//      in-day TOC and prev/next links. Same "not yet released" wall
+//      for URL-guessers.
+//    • Hiding a day implicitly hides all its pages — you do NOT need
+//      to comment out each sub-page.
+//
+//  Note: this is listing-level gating, not hard access control. The HTML
+//  is still generated; the wall keeps casual URL-guessing students out,
+//  but a determined one can inspect the build. For hard gating, add basic
+//  auth at the host level.
+// -----------------------------------------------------------------------
+
+export const VISIBLE_CHAPTERS: readonly string[] = [
+  "day1",
+];
+
+export const VISIBLE_PAGES: readonly string[] = [
+  "day1/penneys-game",
+];
+
+export function isChapterVisible(slug: string): boolean {
+  return VISIBLE_CHAPTERS.includes(slug);
+}
+
+export function isPageVisible(chapter: string, pageSlug: string): boolean {
+  if (!isChapterVisible(chapter)) return false;
+  return VISIBLE_PAGES.includes(`${chapter}/${pageSlug}`);
+}

@@ -1,0 +1,42 @@
+---
+import Base from "../layouts/Base.astro";
+import ChapterCard from "../components/ChapterCard.astro";
+import { isChapterVisible } from "../config/visibility.ts";
+
+const base = import.meta.env.BASE_URL;
+
+// Hand-curated day list — order and blurbs matter pedagogically.
+// Visibility is controlled in src/config/visibility.ts.
+const allChapters = [
+  {
+    slug: "day1",
+    title: "Foundations",
+    blurb: "Sample spaces, events, and the uniform measure — plus a coin-flip betting game that almost nobody wins. Where chance becomes something you can compute.",
+  },
+  // Days 2–5 and the bonus material will appear here as they're built.
+];
+
+const chapters = allChapters.filter((c) => isChapterVisible(c.slug));
+---
+<Base title="The Probabilistic Method" description="A five-day workshop on the probabilistic method, for mathematically curious high-school students.">
+  <section class="mb-16">
+    <h1 class="text-4xl font-semibold tracking-tight mb-4">The Probabilistic Method</h1>
+    <p class="prose text-lg text-[var(--muted)]">
+      A five-day workshop on one of the most beautiful ideas in mathematics:
+      to prove that something <em>exists</em>, build it at random and show the
+      odds are in your favour. Each day pairs a short lecture with games and
+      simulations you can play with right here.
+    </p>
+  </section>
+
+  <section class="grid gap-4 md:grid-cols-2">
+    {chapters.map((c, i) => (
+      <ChapterCard
+        href={`${base}/${c.slug}/`}
+        title={c.title}
+        blurb={c.blurb}
+        number={i + 1}
+      />
+    ))}
+  </section>
+</Base>

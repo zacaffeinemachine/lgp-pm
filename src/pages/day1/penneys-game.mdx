@@ -1,0 +1,63 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Penney's Game
+order: 1
+chapter: day1
+chapterTitle: Day 1 — Foundations
+blurb: Bet on a run of three coin flips. Why does the second player keep winning?
+description: An interactive Penney's-game simulator — pick a length-three coin-flip sequence, play thousands of rounds, and discover why the game is not transitive.
+---
+import PenneysGame from "../../components/games/PenneysGame.tsx";
+
+Here is a game you can play against the house.
+
+We are going to flip a fair coin over and over, writing down `H` for heads
+and `T` for tails, until a run of **three flips in a row** matches somebody's
+bet. Each of us picks a sequence of three in advance — say you bet on `HHT`
+and the house bets on `THH`. We then flip until one of those two patterns
+appears as three *consecutive* flips. Whoever's pattern shows up first wins
+the round.
+
+It feels like a coin toss between equals: the coin is fair, and a sequence of
+three heads-or-tails looks as likely as any other. So surely picking first,
+or picking second, makes no difference?
+
+**Pick your bet below and find out.** In *House auto-beats you* mode, the house
+waits to see your choice and then picks its own. Play a hundred rounds, then a
+thousand, then ten thousand, and watch the win column.
+
+<PenneysGame client:visible />
+
+You will notice something strange: no matter which sequence you choose, the
+house seems to come out ahead — often by a lot. This is **Penney's game**, and
+it is our first example of a phenomenon that runs through this whole workshop:
+careful probability can defeat confident intuition.
+
+## What is going on?
+
+The catch is that runs of coin flips do **not** behave like independent prizes
+in a lottery. Some patterns "wait for" others. Given your sequence
+$s_1 s_2 s_3$, the house picks
+
+$$
+\overline{s_2}\, s_1 s_2,
+$$
+
+that is: the *opposite* of your second symbol, followed by your first and second
+symbols. If you bet `HHH`, the house bets `THH` and wins **seven rounds out of
+eight**. The reason, in a sentence: before your three-in-a-row can finish, the
+house's pattern has usually already sneaked in just before it. We will make
+this precise once we have the language of sample spaces and events.
+
+<details>
+<summary>One more surprise: the game is not transitive.</summary>
+
+Switch to **Free play** and try a little tournament. Sequence `A` can beat `B`,
+and `B` can beat `C`, and yet `C` beats `A`. There is no single "best" sequence
+— for every choice, some other choice beats it. (Compare this to the
+*Watch one round* button: it shows you a single game flip by flip, so you can
+see exactly where one pattern overtakes the other.) Non-transitivity like this
+will come back when we study tournaments and random structures later in the
+week.
+
+</details>
