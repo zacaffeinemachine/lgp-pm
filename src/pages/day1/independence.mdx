@@ -11,6 +11,8 @@ import Lecture from "../../components/lecture/Lecture.astro";
 import Beat from "../../components/lecture/Beat.astro";
 import Summary from "../../components/lecture/Summary.astro";
 import Detail from "../../components/lecture/Detail.astro";
+import FixedPoints from "../../components/widgets/FixedPoints.tsx";
+import AvoidEvents from "../../components/widgets/AvoidEvents.tsx";
 
 Independence is the rule that turns "$A$ and $B$" into a product — used in that form,
 without philosophy.
@@ -60,7 +62,7 @@ If independent, the joint probability would be $1/n^2$; instead
 $\tfrac{1}{n(n-1)} > \tfrac{1}{n^2}$. Knowing $\pi(1) = 1$ makes $\pi(2) = 2$ *more*
 likely — once the value $1$ is used, the value $2$ has one fewer competitor.
 
-{/* WIDGET: fixed-point dependence — sample random permutations, highlight fixed points, compare P(A1 ∩ A2) to P(A1)P(A2) empirically */}
+<FixedPoints client:visible />
 
 </Detail>
 </Beat>
@@ -89,15 +91,26 @@ $$
 since $1 - x \le e^{-x}$. So even when the union bound is too crude, independence can
 deliver sharp **exponential** decay.
 
-{/* WIDGET: avoid-all-events — chain of n independent good/bad events; compare empirical P(all good) to the product and the e^{-Σ} bound */}
+<AvoidEvents client:visible />
 
 </Detail>
 </Beat>
 
-</Lecture>
+<Beat full>
+<Summary>
 
-## Exercises
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
 
 1. Events $A$ and $B$ are independent with $\P(A) = 1/2$ and $\P(B) = 1/3$. Find $\P(A \cap B)$ and $\P(A \cup B)$.
 2. A fair coin is tossed three times, so $\Omega = \set{\texttt{H},\texttt{T}}^3$ with the uniform measure. Let $A$ be "the first toss is `H`" and $B$ be "the second toss is `T`". By counting, decide whether $A$ and $B$ are independent.
 3. Suppose $A_1, \dots, A_n$ are mutually independent, each with probability $p$. Write $\P(\text{none of them occurs})$ as a product, and give an upper bound for it using $1 - x \le e^{-x}$.
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>

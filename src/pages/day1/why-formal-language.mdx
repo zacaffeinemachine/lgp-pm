@@ -8,6 +8,7 @@ blurb: A coin game you keep losing, two students who disagree, and one chord wit
 description: Penney's game plus the two-students paradox and Bertrand's random-chord paradox — why probability needs an explicit sample space and measure.
 ---
 import PenneysGame from "../../components/games/PenneysGame.tsx";
+import RandomChord from "../../components/widgets/RandomChord.tsx";
 
 The workshop is about a powerful proof technique — the **probabilistic method** — but
 it rests on a small handful of ideas we need to make precise. Before any definitions,
@@ -61,7 +62,7 @@ equilateral triangle? Three perfectly reasonable readings give three different a
   there → $1/2$.
 - Pick the **midpoint** of the chord uniformly from the disc → $1/4$.
 
-{/* WIDGET: random-chord selector — pick a method, sample many chords, watch the fraction longer-than-side converge to 1/3, 1/2, or 1/4 */}
+<RandomChord client:visible />
 
 None is *wrong*. They are three different experiments wearing the same English costume;
 the question has no answer until the questioner says *which* random chord they mean.

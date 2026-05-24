@@ -1,7 +1,12 @@
 ---
 // One teachable unit: a terse <Summary> plus the full <Detail>.
 // The Lecture script shows/hides these based on mode + reveal state.
+//
+// `full`: in Summary mode, show the Detail too once this beat is revealed
+// (used for the closing Exercises, which must appear in full at the end).
+interface Props { full?: boolean }
+const { full } = Astro.props;
 ---
-<div class="beat" data-beat>
+<div class="beat" data-beat data-full={full ? "" : undefined}>
   <slot />
 </div>

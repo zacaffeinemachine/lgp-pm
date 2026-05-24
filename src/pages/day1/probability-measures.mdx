@@ -11,6 +11,8 @@ import Lecture from "../../components/lecture/Lecture.astro";
 import Beat from "../../components/lecture/Beat.astro";
 import Summary from "../../components/lecture/Summary.astro";
 import Detail from "../../components/lecture/Detail.astro";
+import CoinBuilder from "../../components/widgets/CoinBuilder.tsx";
+import FrequencyConvergence from "../../components/widgets/FrequencyConvergence.tsx";
 
 A probability measure assigns a **weight** to each outcome; the probability of an event
 is the total weight inside it.
@@ -76,7 +78,7 @@ symmetry), write down $\Omega$ and $\P$, and compute. (That $\hat{p}_N(A) \to \P
 itself the **law of large numbers**, whose quantitative cousin, Chebyshev's inequality,
 appears on Day 5.)
 
-{/* WIDGET: frequentist convergence — toss a coin / roll a die N times, plot the running fraction approaching P(A) */}
+<FrequencyConvergence client:visible />
 
 </Detail>
 </Beat>
@@ -89,7 +91,7 @@ Examples — fair and biased coins, fair and loaded dice.
 </Summary>
 <Detail>
 
-{/* WIDGET: fair/biased coin builder — drag P(H), watch the masses sum to 1 and event probabilities update */}
+<CoinBuilder client:visible />
 
 - **Fair coin.** $\P(\texttt{H}) = \P(\texttt{T}) = 1/2$.
 - **Biased coin.** Same $\Omega$, but $\P(\texttt{H}) = 2/3$, $\P(\texttt{T}) = 1/3$ — so $\P$ is its own ingredient, separate from $\Omega$.
@@ -124,10 +126,21 @@ is a workhorse of the workshop.
 </Detail>
 </Beat>
 
-</Lecture>
+<Beat full>
+<Summary>
 
-## Exercises
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
 
 1. A die is loaded so that $\P(6) = 1/2$ and each other face has probability $1/10$. Find $\P(\text{the roll is odd})$ and $\P(\text{the roll is at least } 5)$.
 2. For events $A, B$ with $\P(A) = 0.6$, $\P(B) = 0.5$, and $\P(A \cap B) = 0.2$, find $\P(A \cup B)$ and $\P(A^c)$.
 3. Using the two-event union bound, explain why $\P(A \cup B \cup C) \le \P(A) + \P(B) + \P(C)$ for any three events.
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>

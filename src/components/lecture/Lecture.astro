@@ -49,10 +49,13 @@
       revealed = Math.max(1, Math.min(revealed, n));
       beats.forEach((beat, i) => {
         const detail = beat.querySelector<HTMLElement>("[data-detail]");
+        const isFull = beat.hasAttribute("data-full");
         if (summary) {
           beat.classList.toggle("is-hidden", i >= revealed);
           beat.classList.remove("detailed");
-          if (detail) detail.classList.add("is-hidden");
+          // Normal beats show only their summary; "full" beats (e.g. the
+          // closing Exercises) reveal their detail too, once reached.
+          if (detail) detail.classList.toggle("is-hidden", !isFull);
         } else {
           beat.classList.remove("is-hidden");
           beat.classList.add("detailed");

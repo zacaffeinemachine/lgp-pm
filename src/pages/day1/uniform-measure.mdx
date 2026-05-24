@@ -11,6 +11,7 @@ import Lecture from "../../components/lecture/Lecture.astro";
 import Beat from "../../components/lecture/Beat.astro";
 import Summary from "../../components/lecture/Summary.astro";
 import Detail from "../../components/lecture/Detail.astro";
+import BirthdayProblem from "../../components/widgets/BirthdayProblem.tsx";
 
 When every outcome is equally likely, the measure is forced — and probability reduces to
 counting.
@@ -76,7 +77,7 @@ $$
 Then $\P(\text{all distinct}) = \dfrac{365 \cdot 364 \cdots 336}{365^{30}} \approx 0.294$,
 so a shared birthday has probability about $0.706$ — better than two in three.
 
-{/* WIDGET: birthday simulator — slider for class size, show P(shared) and where it crosses 50% and 90% */}
+<BirthdayProblem client:visible />
 
 The lesson, recurring all week: with $30$ items in $365$ slots, **collisions are far
 more likely** than the size of the room suggests.
@@ -84,10 +85,21 @@ more likely** than the size of the room suggests.
 </Detail>
 </Beat>
 
-</Lecture>
+<Beat full>
+<Summary>
 
-## Exercises
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
 
 1. Roll a fair die twice. Find $\P(\text{the sum is } 5)$ and $\P(\text{the sum is even})$.
 2. A box holds $4$ red and $2$ green balls; draw two without replacement. Find $\P(\text{both are red})$.
 3. A number is chosen uniformly at random from $\set{1, 2, \dots, 10}$. Find $\P(\text{it is prime})$.
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>

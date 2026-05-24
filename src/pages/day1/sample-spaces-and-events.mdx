@@ -11,6 +11,7 @@ import Lecture from "../../components/lecture/Lecture.astro";
 import Beat from "../../components/lecture/Beat.astro";
 import Summary from "../../components/lecture/Summary.astro";
 import Detail from "../../components/lecture/Detail.astro";
+import TwoTosses from "../../components/widgets/TwoTosses.tsx";
 
 With the discipline of the previous page in mind, we collect the formal vocabulary we
 will use all week: experiment, outcome, sample space, and event.
@@ -66,7 +67,7 @@ $\set{\texttt{HHH},\texttt{HHT},\texttt{HTH},\texttt{THH}}$; "the first toss is 
 is $\set{\texttt{THH},\texttt{THT},\texttt{TTH},\texttt{TTT}}$; "all three the same" is
 $\set{\texttt{HHH},\texttt{TTT}}$.
 
-{/* WIDGET: two-toss visual — show the four equally-likely outcomes HH, HT, TH, TT and why grouping "one of each" breaks equal likelihood */}
+<TwoTosses client:visible />
 
 </Detail>
 </Beat>
@@ -137,10 +138,21 @@ $A$ and $B$ are *not* disjoint (they share $6$), but $A$ and $C = \set{1,3}$ are
 </Detail>
 </Beat>
 
-</Lecture>
+<Beat full>
+<Summary>
 
-## Exercises
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
 
 1. Toss a coin twice, recording the result in order. Write the sample space $\Omega$, then write "at least one head" as a subset of $\Omega$.
 2. For one roll of a fair die with $A = \set{2,4,6}$ and $B = \set{5,6}$, write $A \cup B$, $A \cap B$, and $A^c$. Are $A$ and $B$ mutually exclusive?
 3. A family has three children, genders recorded in birth order. Write $\Omega$, and write the event "exactly two of the children are girls" as a subset.
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>
