@@ -8,11 +8,7 @@ import { useEffect, useRef, useState } from "react";
 type Bit = "H" | "T";
 const opp = (c: string): Bit => (c === "H" ? "T" : "H");
 
-/**
- * The classic optimal counter to a length-3 sequence s1 s2 s3:
- *   choose  (not s2)  s1  s2.
- * Verifies: HHH -> THH, HTH -> HHT.
- */
+/** The house's reply to a length-3 sequence s1 s2 s3 is (not s2) s1 s2. */
 function counterSeq(seq: string): string {
   return opp(seq[1]) + seq[0] + seq[1];
 }
@@ -27,117 +23,158 @@ function playRound(a: string, b: string): "a" | "b" {
   }
 }
 
-/** Simulate `n` independent rounds and tally the winners. */
-function simulate(a: string, b: string, n: number): { a: number; b: number } {
-  let aWins = 0;
-  let bWins = 0;
-  for (let i = 0; i < n; i++) {
-    if (playRound(a, b) === "a") aWins++;
-    else bWins++;
-  }
-  return { a: aWins, b: bWins };
-}
-
-/** Record one round's full flip history, for the step-by-step animation. */
-function sampleRound(a: string, b: string): { flips: Bit[]; winner: "a" | "b" } {
-  const flips: Bit[] = [];
-  let w = "";
-  for (;;) {
-    const f: Bit = Math.random() < 0.5 ? "H" : "T";
-    flips.push(f);
-    w = (w + f).slice(-3);
-    if (w === a) return { flips, winner: "a" };
-    if (w === b) return { flips, winner: "b" };
-  }
-}
-
-// --- Conway's leading-number algorithm: the exact win probability. ---------
-
-/** Correlation of x over y: sum of 2^(k-1) over k where the last k of x = first k of y. */
-function corr(x: string, y: string): number {
-  const L = x.length;
-  let total = 0;
-  for (let k = 1; k <= L; k++) {
-    if (x.slice(L - k) === y.slice(0, k)) total += 1 << (k - 1);
-  }
-  return total;
-}
-
-/** Exact probability that sequence `b` appears before sequence `a`. */
-function probBWins(a: string, b: string): number {
-  const num = corr(a, a) - corr(a, b);
-  const den = num + (corr(b, b) - corr(b, a));
-  return num / den;
-}
-
 // ---------------------------------------------------------------------------
 //  UI
 // ---------------------------------------------------------------------------
 
+type Winner = "you" | "house";
 type Mode = "house" | "free";
+type Speed = "slow" | "medium" | "fast" | "instant";
 
 const YOU_COLOR = "#2563eb"; // blue
 const HOUSE_COLOR = "var(--accent)"; // themed red
 
+const SPEEDS: Record<Exclude<Speed, "instant">, { flip: number; between: number }> = {
+  slow: { flip: 460, between: 720 },
+  medium: { flip: 180, between: 340 },
+  fast: { flip: 55, between: 150 },
+};
+
+const MAX_ROUNDS = 999;
+
+function clampRounds(n: number): number {
+  if (!Number.isFinite(n)) return 1;
+  return Math.max(1, Math.min(MAX_ROUNDS, Math.floor(n)));
+}
+
 export default function PenneysGame() {
   const [mode, setMode] = useState<Mode>("house");
   const [you, setYou] = useState("HHT");
-  const [rival, setRival] = useState("THH"); // used only in free mode
+  const [rival, setRival] = useState("THH"); // free-play only
+  const [rounds, setRounds] = useState(25);
+  const [speed, setSpeed] = useState<Speed>("medium");
 
-  // The house/rival's actual sequence depends on the mode.
   const houseSeq = mode === "house" ? counterSeq(you) : rival;
   const houseLabel = mode === "house" ? "The house" : "Your rival";
-
   const identical = you === houseSeq;
 
-  const [results, setResults] = useState<{ you: number; house: number; n: number } | null>(null);
+  const [phase, setPhase] = useState<"idle" | "running" | "done">("idle");
+  const [winners, setWinners] = useState<Winner[]>([]);
+  const [curFlips, setCurFlips] = useState<Bit[]>([]);
 
-  // One illustrative round, revealed flip by flip.
-  const [sample, setSample] = useState<{ flips: Bit[]; winner: "a" | "b" } | null>(null);
-  const [revealed, setRevealed] = useState(0);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // Mutable engine state for the flip-by-flip animation, kept in a ref so the
+  // timer callback always sees the latest values without stale closures.
+  const engine = useRef<{
+    a: string;
+    b: string;
+    total: number;
+    flip: number;
+    between: number;
+    flips: Bit[];
+    window: string;
+    round: number;
+    winners: Winner[];
+  } | null>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Whenever the bets change, clear stale output.
-  useEffect(() => {
-    setResults(null);
-    stopSample();
-    setSample(null);
-    setRevealed(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [you, rival, mode]);
-
-  useEffect(() => () => stopSample(), []);
-
-  function stopSample() {
-    if (timerRef.current !== null) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
+  function clearTimer() {
+    if (timer.current !== null) {
+      clearTimeout(timer.current);
+      timer.current = null;
     }
   }
 
-  function run(n: number) {
-    if (identical) return;
-    const tally = simulate(you, houseSeq, n);
-    setResults({ you: tally.a, house: tally.b, n });
+  function reset() {
+    clearTimer();
+    engine.current = null;
+    setPhase("idle");
+    setWinners([]);
+    setCurFlips([]);
   }
 
-  function watchOne() {
-    if (identical) return;
-    stopSample();
-    const s = sampleRound(you, houseSeq);
-    setSample(s);
-    setRevealed(0);
-    let i = 0;
-    timerRef.current = setInterval(() => {
-      i += 1;
-      setRevealed(i);
-      if (i >= s.flips.length) stopSample();
-    }, 260);
+  // A change to the setup clears any run in progress.
+  useEffect(() => {
+    reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [you, rival, mode]);
+  useEffect(() => () => clearTimer(), []);
+
+  function tick() {
+    const e = engine.current;
+    if (!e) return;
+    const f: Bit = Math.random() < 0.5 ? "H" : "T";
+    e.flips.push(f);
+    e.window = (e.window + f).slice(-3);
+
+    let decided: Winner | null = null;
+    if (e.window === e.a) decided = "you";
+    else if (e.window === e.b) decided = "house";
+
+    if (decided) {
+      e.winners.push(decided);
+      e.round += 1;
+      setWinners([...e.winners]);
+      setCurFlips([...e.flips]); // leave the deciding round on screen for a beat
+      e.flips = [];
+      e.window = "";
+      if (e.round >= e.total) {
+        clearTimer();
+        setPhase("done");
+        return;
+      }
+      timer.current = setTimeout(tick, e.between);
+    } else {
+      setCurFlips([...e.flips]);
+      timer.current = setTimeout(tick, e.flip);
+    }
   }
 
-  const theory = !identical ? probBWins(you, houseSeq) : null;
-  const youPct = results ? (100 * results.you) / results.n : 0;
-  const housePct = results ? (100 * results.house) / results.n : 0;
+  function watch() {
+    if (identical) return;
+    clearTimer();
+    const total = clampRounds(rounds);
+
+    if (speed === "instant") {
+      const ws: Winner[] = [];
+      for (let i = 0; i < total; i++) {
+        ws.push(playRound(you, houseSeq) === "a" ? "you" : "house");
+      }
+      engine.current = null;
+      setCurFlips([]);
+      setWinners(ws);
+      setPhase("done");
+      return;
+    }
+
+    const s = SPEEDS[speed];
+    engine.current = {
+      a: you,
+      b: houseSeq,
+      total,
+      flip: s.flip,
+      between: s.between,
+      flips: [],
+      window: "",
+      round: 0,
+      winners: [],
+    };
+    setWinners([]);
+    setCurFlips([]);
+    setPhase("running");
+    timer.current = setTimeout(tick, s.flip);
+  }
+
+  function stop() {
+    clearTimer();
+    setPhase("done");
+  }
+
+  const youWins = winners.filter((w) => w === "you").length;
+  const houseWins = winners.length - youWins;
+  const youPct = winners.length ? (100 * youWins) / winners.length : 0;
+  const housePct = winners.length ? (100 * houseWins) / winners.length : 0;
+  const busy = phase === "running";
+  const totalPlanned = clampRounds(rounds);
 
   return (
     <figure className="not-prose my-10 space-y-6">
@@ -148,10 +185,10 @@ export default function PenneysGame() {
           role="tablist"
           aria-label="Game mode"
         >
-          <ModeButton active={mode === "house"} onClick={() => setMode("house")}>
-            House auto-beats you
+          <ModeButton active={mode === "house"} disabled={busy} onClick={() => setMode("house")}>
+            You vs. the house
           </ModeButton>
-          <ModeButton active={mode === "free"} onClick={() => setMode("free")}>
+          <ModeButton active={mode === "free"} disabled={busy} onClick={() => setMode("free")}>
             Free play
           </ModeButton>
         </div>
@@ -163,20 +200,15 @@ export default function PenneysGame() {
           label="Your bet"
           color={YOU_COLOR}
           seq={you}
-          editable
+          editable={!busy}
           onChange={setYou}
         />
         <BetPanel
           label={`${houseLabel}'s bet`}
           color={HOUSE_COLOR}
           seq={houseSeq}
-          editable={mode === "free"}
+          editable={mode === "free" && !busy}
           onChange={setRival}
-          note={
-            mode === "house"
-              ? "Auto-chosen to beat you: flip your 2nd symbol, then copy your 1st and 2nd."
-              : undefined
-          }
         />
       </div>
 
@@ -187,86 +219,144 @@ export default function PenneysGame() {
       )}
 
       {/* Controls */}
-      <div className="flex flex-wrap items-center justify-center gap-2 text-sm">
-        <span className="text-[var(--muted)] mr-1">Play</span>
-        {[100, 1000, 10000].map((n) => (
+      <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
+        <label className="flex items-center gap-2">
+          <span className="text-[var(--muted)]">Rounds</span>
+          <input
+            type="number"
+            min={1}
+            max={MAX_ROUNDS}
+            value={rounds}
+            disabled={busy}
+            onChange={(e) => setRounds(clampRounds(Number(e.target.value)))}
+            className="w-20 px-2 py-1.5 rounded-md border border-[var(--rule)] bg-[var(--bg)] tabular-nums focus:outline-none focus:border-[var(--accent)] disabled:opacity-40"
+          />
+        </label>
+
+        <div className="flex items-center gap-2">
+          <span className="text-[var(--muted)]">Speed</span>
+          <div className="inline-flex rounded-md border border-[var(--rule)] overflow-hidden">
+            {(["slow", "medium", "fast", "instant"] as Speed[]).map((s) => (
+              <button
+                key={s}
+                onClick={() => setSpeed(s)}
+                disabled={busy}
+                aria-pressed={speed === s}
+                className="px-2.5 py-1.5 capitalize transition-colors disabled:opacity-40"
+                style={{
+                  background: speed === s ? "var(--accent)" : "transparent",
+                  color: speed === s ? "#fff" : "var(--muted)",
+                }}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {busy ? (
           <button
-            key={n}
-            onClick={() => run(n)}
-            disabled={identical}
-            className="px-3 py-1.5 rounded-md border border-[var(--rule)] hover:border-[var(--accent)] disabled:opacity-40 disabled:cursor-not-allowed transition-colors tabular-nums"
+            onClick={stop}
+            className="px-4 py-1.5 rounded-md border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent-soft)] transition-colors"
           >
-            {n.toLocaleString()} rounds
+            Stop
           </button>
-        ))}
-        <span className="mx-1 text-[var(--muted)]">·</span>
-        <button
-          onClick={watchOne}
-          disabled={identical}
-          className="px-3 py-1.5 rounded-md border border-[var(--rule)] hover:border-[var(--accent)] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-        >
-          Watch one round
-        </button>
+        ) : (
+          <button
+            onClick={watch}
+            disabled={identical}
+            className="px-4 py-1.5 rounded-md border border-[var(--rule)] hover:border-[var(--accent)] disabled:opacity-40 disabled:cursor-not-allowed transition-colors font-medium"
+          >
+            Watch
+          </button>
+        )}
+        {(phase !== "idle" || winners.length > 0) && !busy && (
+          <button
+            onClick={reset}
+            className="px-3 py-1.5 rounded-md border border-[var(--rule)] hover:border-[var(--accent)] transition-colors"
+          >
+            Reset
+          </button>
+        )}
       </div>
 
-      {/* Single-round animation */}
-      {sample && (
-        <SampleStrip
-          flips={sample.flips}
-          revealed={revealed}
-          done={revealed >= sample.flips.length}
-          winner={sample.winner === "a" ? "you" : "house"}
-          youColor={YOU_COLOR}
-          houseColor={HOUSE_COLOR}
-        />
+      {/* Current round, flip by flip */}
+      {curFlips.length > 0 && (
+        <div className="p-4 rounded-lg border border-[var(--rule)] bg-[var(--surface)]">
+          <div className="flex items-baseline justify-between mb-3">
+            <span className="text-xs uppercase tracking-wider text-[var(--muted)]">
+              Round {Math.min(winners.length + (busy ? 1 : 0), totalPlanned) || winners.length}
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {curFlips.map((f, i) => (
+              <Coin key={i} bit={f} size={32} />
+            ))}
+          </div>
+        </div>
       )}
 
-      {/* Batch results */}
-      {results && (
+      {/* Tally + stats */}
+      {winners.length > 0 && (
         <div className="p-5 rounded-lg border border-[var(--rule)] bg-[var(--surface)] space-y-4">
-          <div className="text-xs uppercase tracking-wider text-[var(--muted)]">
-            {results.n.toLocaleString()} rounds
+          <div className="flex items-baseline justify-between">
+            <span className="text-xs uppercase tracking-wider text-[var(--muted)]">
+              {winners.length.toLocaleString()} of {totalPlanned.toLocaleString()} rounds
+            </span>
+            {phase === "done" && (
+              <span className="text-xs uppercase tracking-wider text-[var(--muted)]">Final</span>
+            )}
           </div>
 
           {/* Stacked bar */}
           <div className="flex h-9 w-full overflow-hidden rounded-md text-xs font-medium text-white">
             <div
               className="flex items-center justify-start pl-2"
-              style={{ width: `${youPct}%`, background: YOU_COLOR, transition: "width 300ms ease" }}
+              style={{ width: `${youPct}%`, background: YOU_COLOR, transition: "width 200ms ease" }}
             >
-              {youPct >= 12 && `${youPct.toFixed(1)}%`}
+              {youPct >= 12 && `${youPct.toFixed(0)}%`}
             </div>
             <div
               className="flex items-center justify-end pr-2"
-              style={{ width: `${housePct}%`, background: HOUSE_COLOR, transition: "width 300ms ease" }}
+              style={{ width: `${housePct}%`, background: HOUSE_COLOR, transition: "width 200ms ease" }}
             >
-              {housePct >= 12 && `${housePct.toFixed(1)}%`}
+              {housePct >= 12 && `${housePct.toFixed(0)}%`}
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4 text-sm">
-            <ResultStat
-              label={`You (${you})`}
-              color={YOU_COLOR}
-              wins={results.you}
-              pct={youPct}
-            />
+            <ResultStat label={`You (${you})`} color={YOU_COLOR} wins={youWins} pct={youPct} />
             <ResultStat
               label={`${houseLabel} (${houseSeq})`}
               color={HOUSE_COLOR}
-              wins={results.house}
+              wins={houseWins}
               pct={housePct}
             />
           </div>
 
-          {theory !== null && (
-            <p className="text-xs text-[var(--muted)] pt-1 border-t border-[var(--rule)]">
-              Exact probability the {mode === "house" ? "house" : "rival"} wins:{" "}
-              <strong style={{ color: HOUSE_COLOR }}>{(100 * theory).toFixed(1)}%</strong>{" "}
-              (Conway's formula). The simulated share above should sit close to this — and
-              closer the more rounds you play.
-            </p>
-          )}
+          {/* Colour-coded round-by-round outcomes */}
+          <div>
+            <div className="flex gap-4 text-xs text-[var(--muted)] mb-2">
+              <span className="flex items-center gap-1.5">
+                <span className="inline-block w-3 h-3 rounded-sm" style={{ background: YOU_COLOR }} />
+                You
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="inline-block w-3 h-3 rounded-sm" style={{ background: HOUSE_COLOR }} />
+                {houseLabel}
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-1">
+              {winners.map((w, i) => (
+                <span
+                  key={i}
+                  title={`Round ${i + 1}`}
+                  className="w-3.5 h-3.5 rounded-sm"
+                  style={{ background: w === "you" ? YOU_COLOR : HOUSE_COLOR }}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </figure>
@@ -277,19 +367,22 @@ export default function PenneysGame() {
 
 function ModeButton({
   active,
+  disabled,
   onClick,
   children,
 }: {
   active: boolean;
+  disabled?: boolean;
   onClick: () => void;
   children: React.ReactNode;
 }) {
   return (
     <button
       onClick={onClick}
+      disabled={disabled}
       role="tab"
       aria-selected={active}
-      className="px-4 py-1.5 transition-colors"
+      className="px-4 py-1.5 transition-colors disabled:opacity-40"
       style={{
         background: active ? "var(--accent)" : "transparent",
         color: active ? "#fff" : "var(--muted)",
@@ -306,14 +399,12 @@ function BetPanel({
   seq,
   editable,
   onChange,
-  note,
 }: {
   label: string;
   color: string;
   seq: string;
   editable: boolean;
   onChange: (next: string) => void;
-  note?: string;
 }) {
   const setPos = (i: number, bit: Bit) => {
     onChange(seq.slice(0, i) + bit + seq.slice(i + 1));
@@ -334,8 +425,24 @@ function BetPanel({
           />
         ))}
       </div>
-      {note && <p className="text-xs text-[var(--muted)] mt-3 leading-relaxed">{note}</p>}
     </div>
+  );
+}
+
+function Coin({ bit, size }: { bit: Bit; size: number }) {
+  return (
+    <span
+      className="rounded-full font-mono font-semibold flex items-center justify-center"
+      style={{
+        width: size,
+        height: size,
+        fontSize: size * 0.45,
+        background: bit === "H" ? "var(--coin-heads)" : "var(--coin-tails)",
+        color: "var(--coin-ink)",
+      }}
+    >
+      {bit}
+    </span>
   );
 }
 
@@ -392,59 +499,6 @@ function ResultStat({
         {pct.toFixed(1)}%
       </div>
       <div className="text-xs text-[var(--muted)] tabular-nums">{wins.toLocaleString()} wins</div>
-    </div>
-  );
-}
-
-function SampleStrip({
-  flips,
-  revealed,
-  done,
-  winner,
-  youColor,
-  houseColor,
-}: {
-  flips: Bit[];
-  revealed: number;
-  done: boolean;
-  winner: "you" | "house";
-  youColor: string;
-  houseColor: string;
-}) {
-  const winColor = winner === "you" ? youColor : houseColor;
-  const shown = flips.slice(0, revealed);
-  return (
-    <div className="p-4 rounded-lg border border-[var(--rule)] bg-[var(--surface)]">
-      <div className="text-xs uppercase tracking-wider text-[var(--muted)] mb-3">
-        One round, flip by flip
-      </div>
-      <div className="flex flex-wrap gap-1.5">
-        {shown.map((f, i) => {
-          // Highlight the final three flips once the round is decided.
-          const isWinTriple = done && i >= flips.length - 3;
-          return (
-            <span
-              key={i}
-              className="w-8 h-8 rounded-full font-mono text-sm font-semibold flex items-center justify-center"
-              style={{
-                background: f === "H" ? "var(--coin-heads)" : "var(--coin-tails)",
-                color: "var(--coin-ink)",
-                outline: isWinTriple ? `2px solid ${winColor}` : "none",
-                outlineOffset: 1,
-              }}
-            >
-              {f}
-            </span>
-          );
-        })}
-      </div>
-      {done && (
-        <p className="text-sm mt-3" role="status">
-          Won by{" "}
-          <strong style={{ color: winColor }}>{winner === "you" ? "you" : "the house"}</strong>{" "}
-          after {flips.length} flips.
-        </p>
-      )}
     </div>
   );
 }
