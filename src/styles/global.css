@@ -79,4 +79,73 @@ body {
 :root[data-theme="light"] .theme-icon-dark { display: none; }
 :root[data-theme="dark"]  .theme-icon-light { display: none; }
 
+/* Lecture mode (Summary / Detailed) ------------------------------------- */
+.lecture { margin: 1.5rem 0; }
+
+.lecture-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--rule);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 5;
+}
+
+.lecture-modes {
+  display: inline-flex;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.lecture-modes button {
+  padding: 0.35rem 0.95rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 120ms, color 120ms;
+}
+.lecture-modes button[aria-selected="true"] { background: var(--accent); color: #fff; }
+
+.lecture-reveal { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
+.lecture-reveal button {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 120ms;
+}
+.lecture-reveal button:hover { border-color: var(--accent); }
+.lecture-count { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.lecture-hint { font-size: 0.8rem; color: var(--muted); margin: 0 0 1.25rem; }
+
+.beat { margin: 0 0 1.1rem; }
+.is-hidden { display: none !important; }
+
+/* Summary view: headlines as a stepped list with an accent tick. */
+.lecture[data-mode="summary"] .beat {
+  padding: 0.5rem 0 0.5rem 1rem;
+  border-left: 2px solid var(--accent);
+  cursor: pointer;
+}
+.lecture[data-mode="summary"] .beat-summary { font-weight: 500; }
+.lecture[data-mode="summary"] .beat-summary p { margin: 0.25rem 0; }
+
+/* Detailed view: summary becomes a small lead-in heading above the detail. */
+.beat.detailed .beat-summary {
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.35rem;
+}
+.beat.detailed .beat-summary p { margin: 0; }
+
 /* KaTeX dark-mode contrast: its default uses body color, which is already themed */

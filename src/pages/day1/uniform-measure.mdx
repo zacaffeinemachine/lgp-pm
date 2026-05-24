@@ -1,57 +1,93 @@
 ---
 layout: ../../layouts/Chapter.astro
 title: The Uniform Probability Measure
-order: 5
+order: 4
 chapter: day1
 chapterTitle: Day 1 — Foundations
 blurb: When every outcome is equally likely, probability becomes counting — and the birthday problem shows how surprising counting can be.
 description: The uniform measure as favourable-over-total, with dice and urn examples and the birthday problem worked in full.
 ---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
 
-When $\Omega$ is finite and we model every outcome as **equally likely**, the measure
-is forced: each singleton $\set{\omega}$ gets probability $1/\abs{\Omega}$. By (P3), the
-probability of any event is then
+When every outcome is equally likely, the measure is forced — and probability reduces to
+counting.
+
+<Lecture>
+
+<Beat>
+<Summary>
+
+Equally likely outcomes: $\P(A) = \abs{A} / \abs{\Omega}$.
+
+</Summary>
+<Detail>
+
+If $\Omega$ is finite and each outcome is equally likely, every singleton gets
+probability $1/\abs{\Omega}$, and by (P3)
 
 $$
 \P(A) = \frac{\abs{A}}{\abs{\Omega}} = \frac{\#\set{\text{favourable outcomes}}}{\#\set{\text{total outcomes}}}.
 $$
 
-This is the **uniform probability measure** (the equiprobable model). Almost every
-Day 1 problem uses it — so probability reduces to **counting**.
+This is the **uniform probability measure**. Almost every Day 1 problem uses it.
 
-**Two dice.** Roll a fair die twice, recording $(a,b)$; $\Omega = \set{1,\dots,6}^2$, so
-$\abs{\Omega} = 36$. The event $a+b = 7$ has six outcomes
-$(1,6), (2,5), \dots, (6,1)$, so $\P = 6/36 = 1/6$.
+</Detail>
+</Beat>
 
-**An urn.** A box has $5$ red and $3$ blue balls; draw two without replacement;
-probability both are red? Take $\Omega$ to be unordered pairs of balls, so
-$\abs{\Omega} = \binom{8}{2} = 28$; the red pairs number $\binom{5}{2} = 10$, giving
-$10/28 = 5/14$. Counting *ordered* pairs instead gives $\tfrac{5\cdot 4}{8 \cdot 7} = \tfrac{20}{56} = \tfrac{5}{14}$ — the same answer, as it must, provided we count consistently.
+<Beat>
+<Summary>
 
-## The birthday problem
+Example — two dice, and an urn.
 
-A classroom has $30$ students. Assuming each birthday is equally likely to be any of
-$365$ days, chosen independently, what is the probability that **some two share** a
-birthday?
+</Summary>
+<Detail>
 
-The cleanest sample space is $\Omega = \set{1, \dots, 365}^{30}$ with the uniform
-measure: an outcome is an ordered list of $30$ birthdays, so $\abs{\Omega} = 365^{30}$.
-It is easier to count the **complement** — "all $30$ distinct" — as ordered tuples of
-distinct days:
+**Two dice.** $\Omega = \set{1,\dots,6}^2$, $\abs{\Omega} = 36$. The event $a+b = 7$ has
+six outcomes, so $\P = 6/36 = 1/6$.
+
+**An urn.** $5$ red and $3$ blue balls, draw two without replacement; both red? With
+$\Omega$ the unordered pairs, $\abs{\Omega} = \binom{8}{2} = 28$ and the red pairs number
+$\binom{5}{2} = 10$, giving $10/28 = 5/14$. Counting ordered pairs gives
+$\tfrac{5\cdot4}{8\cdot7} = \tfrac{5}{14}$ — the same, as it must.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+The birthday problem — collisions are likelier than you think.
+
+</Summary>
+<Detail>
+
+A class of $30$ students, each birthday equally likely among $365$ days, chosen
+independently — probability that **some two share** a birthday? Take
+$\Omega = \set{1,\dots,365}^{30}$, so $\abs{\Omega} = 365^{30}$. Count the **complement**,
+"all distinct", as ordered tuples of distinct days:
 
 $$
-365 \cdot 364 \cdot 363 \cdots 336 = \frac{365!}{335!}.
+365 \cdot 364 \cdots 336 = \frac{365!}{335!}.
 $$
 
-Therefore
-
-$$
-\P(\text{all distinct}) = \frac{365 \cdot 364 \cdots 336}{365^{30}} \approx 0.294,
-$$
-
-so the probability of a shared birthday is about $0.706$ — better than two in three.
+Then $\P(\text{all distinct}) = \dfrac{365 \cdot 364 \cdots 336}{365^{30}} \approx 0.294$,
+so a shared birthday has probability about $0.706$ — better than two in three.
 
 {/* WIDGET: birthday simulator — slider for class size, show P(shared) and where it crosses 50% and 90% */}
 
-The lesson, which returns all week: with $30$ items dropped into $365$ slots,
-**collisions are far more likely** than the size of the room alone suggests.
+The lesson, recurring all week: with $30$ items in $365$ slots, **collisions are far
+more likely** than the size of the room suggests.
+
+</Detail>
+</Beat>
+
+</Lecture>
+
+## Exercises
+
+1. Roll a fair die twice. Find $\P(\text{the sum is } 5)$ and $\P(\text{the sum is even})$.
+2. A box holds $4$ red and $2$ green balls; draw two without replacement. Find $\P(\text{both are red})$.
+3. A number is chosen uniformly at random from $\set{1, 2, \dots, 10}$. Find $\P(\text{it is prime})$.

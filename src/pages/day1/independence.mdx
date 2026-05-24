@@ -1,25 +1,35 @@
 ---
 layout: ../../layouts/Chapter.astro
 title: Independence of Events
-order: 6
+order: 5
 chapter: day1
 chapterTitle: Day 1 — Foundations
 blurb: A multiplication rule that turns "and" into a product — plus a warning about when intuition gets it wrong.
 description: Independence and mutual independence via the multiplication rule, why intuition fails (permutation fixed points), and the avoid-all-events identity with its exponential bound.
 ---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
 
-Two events $A$ and $B$ are **independent** if
+Independence is the rule that turns "$A$ and $B$" into a product — used in that form,
+without philosophy.
 
-$$
-\P(A \cap B) = \P(A) \cdot \P(B).
-$$
+<Lecture>
 
-Intuitively: knowing whether $A$ occurred does not change the probability of $B$. The
-definition is exactly this multiplication rule for the joint probability, and we use it
-in that form, without philosophy.
+<Beat>
+<Summary>
 
-More generally, events $A_1, \dots, A_n$ are **mutually independent** if for *every*
-subset of indices $i_1 < \cdots < i_k$,
+**Definition** — independence: $\P(A \cap B) = \P(A)\,\P(B)$.
+
+</Summary>
+<Detail>
+
+> Events $A$ and $B$ are **independent** if $\P(A \cap B) = \P(A) \cdot \P(B)$.
+
+Intuitively, knowing whether $A$ occurred does not change the probability of $B$. More
+generally, $A_1, \dots, A_n$ are **mutually independent** if for *every* subset of
+indices,
 
 $$
 \P(A_{i_1} \cap \cdots \cap A_{i_k}) = \P(A_{i_1}) \cdots \P(A_{i_k}).
@@ -27,49 +37,67 @@ $$
 
 One must check the rule for every subset, not only for pairs.
 
-## Intuition can mislead
+</Detail>
+</Beat>
 
-{/* WIDGET: fixed-point dependence — sample random permutations, highlight fixed points, compare P(A1 ∩ A2) to P(A1)P(A2) empirically */}
+<Beat>
+<Summary>
 
-Let $\pi$ be a uniformly random permutation of $\set{1,2,\dots,n}$ with $n \ge 2$, and
-let $A_i = \set{\pi(i) = i}$ be the event "$i$ is a fixed point." These *look* like they
-should be independent — the value at position $1$ seems unrelated to the value at
-position $2$ — yet they are not.
+Intuition can mislead — fixed points of a random permutation.
 
-Working in $\Omega = S_n$ (all $n!$ permutations, uniform), the permutations fixing
-$\pi(1) = 1$ number $(n-1)!$, so $\P(A_1) = (n-1)!/n! = 1/n$. Those fixing both
-$\pi(1)=1$ and $\pi(2)=2$ number $(n-2)!$, so
+</Summary>
+<Detail>
+
+Let $\pi$ be a uniformly random permutation of $\set{1, \dots, n}$, and
+$A_i = \set{\pi(i) = i}$. These *look* independent but are not. In $\Omega = S_n$,
 
 $$
+\P(A_1) = \frac{(n-1)!}{n!} = \frac1n, \qquad
 \P(A_1 \cap A_2) = \frac{(n-2)!}{n!} = \frac{1}{n(n-1)}.
 $$
 
-If $A_1, A_2$ were independent this would equal $\P(A_1)\P(A_2) = 1/n^2$. Instead
-$\tfrac{1}{n(n-1)} > \tfrac{1}{n^2}$: knowing $\pi(1)=1$ makes $\pi(2)=2$ *more* likely,
-because once the value $1$ is used up, the value $2$ has one fewer competitor. The bias
-is small for large $n$ but real — exactly the kind of dependence informal reasoning
-misses.
+If independent, the joint probability would be $1/n^2$; instead
+$\tfrac{1}{n(n-1)} > \tfrac{1}{n^2}$. Knowing $\pi(1) = 1$ makes $\pi(2) = 2$ *more*
+likely — once the value $1$ is used, the value $2$ has one fewer competitor.
 
-## A first useful identity
+{/* WIDGET: fixed-point dependence — sample random permutations, highlight fixed points, compare P(A1 ∩ A2) to P(A1)P(A2) empirically */}
 
-A typical use of mutual independence is arguing that "none of a long list of bad things
-happens." Applying the multiplication rule to the *complementary* events turns this
-into a product, which is often far easier to estimate.
+</Detail>
+</Beat>
 
-> **Probability of avoiding many events.** If $A_1, \dots, A_n$ are mutually
-> independent, then
-> $$\P\!\left(\bigcap_{i=1}^n A_i^c\right) = \prod_{i=1}^n \P(A_i^c) = \prod_{i=1}^n \bigl(1 - \P(A_i)\bigr).$$
+<Beat>
+<Summary>
 
-*Why:* if $A_1, \dots, A_n$ are mutually independent then so are their complements
-$A_1^c, \dots, A_n^c$; the identity is then just the multiplication rule.
+Avoiding many events — a product, and an exponential bound.
 
-{/* WIDGET: avoid-all-events — chain of n independent good/bad events; compare empirical P(all good) to the product and the e^{-Σ} bound */}
+</Summary>
+<Detail>
 
-A consequence we return to repeatedly: for any reals $x_i$,
+To argue "none of a long list of bad things happens", apply the multiplication rule to
+the complements:
+
+> If $A_1, \dots, A_n$ are mutually independent, then
+> $$\P\!\left(\bigcap_{i=1}^n A_i^c\right) = \prod_{i=1}^n \bigl(1 - \P(A_i)\bigr).$$
+
+(If the $A_i$ are mutually independent, so are their complements.) A consequence we
+return to repeatedly: for any reals $x_i$,
 
 $$
 \prod_{i=1}^n (1 - x_i) \le \exp\!\left(-\sum_{i=1}^n x_i\right),
 $$
 
-since $1 - x \le e^{-x}$ for all real $x$. So even when the union bound is too crude, an
-independence argument can deliver sharp **exponential** decay.
+since $1 - x \le e^{-x}$. So even when the union bound is too crude, independence can
+deliver sharp **exponential** decay.
+
+{/* WIDGET: avoid-all-events — chain of n independent good/bad events; compare empirical P(all good) to the product and the e^{-Σ} bound */}
+
+</Detail>
+</Beat>
+
+</Lecture>
+
+## Exercises
+
+1. Events $A$ and $B$ are independent with $\P(A) = 1/2$ and $\P(B) = 1/3$. Find $\P(A \cap B)$ and $\P(A \cup B)$.
+2. A fair coin is tossed three times, so $\Omega = \set{\texttt{H},\texttt{T}}^3$ with the uniform measure. Let $A$ be "the first toss is `H`" and $B$ be "the second toss is `T`". By counting, decide whether $A$ and $B$ are independent.
+3. Suppose $A_1, \dots, A_n$ are mutually independent, each with probability $p$. Write $\P(\text{none of them occurs})$ as a product, and give an upper bound for it using $1 - x \le e^{-x}$.

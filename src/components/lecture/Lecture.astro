@@ -1,0 +1,105 @@
+---
+// A teachable block with two views:
+//   • Summary  — terse <Summary> headlines, revealed one at a time (default)
+//   • Detailed — full <Detail> content for every beat
+// Math renders at build inside the slotted MDX, so this is a plain Astro
+// component + a small script (no React island needed).
+---
+<div class="lecture" data-mode="summary">
+  <div class="lecture-bar not-prose">
+    <div class="lecture-modes" role="tablist" aria-label="Lecture view">
+      <button type="button" data-mode-btn="summary" role="tab" aria-selected="true">Summary</button>
+      <button type="button" data-mode-btn="detailed" role="tab" aria-selected="false">Detailed</button>
+    </div>
+    <div class="lecture-reveal">
+      <button type="button" data-reveal="next">Reveal next</button>
+      <button type="button" data-reveal="all">Reveal all</button>
+      <button type="button" data-reveal="restart">Restart</button>
+      <span class="lecture-count" data-count></span>
+    </div>
+  </div>
+  <p class="lecture-hint not-prose" data-hint>
+    Lecture view — reveal step by step (click, or press →), or switch to Detailed.
+  </p>
+  <div class="lecture-body">
+    <slot />
+  </div>
+</div>
+
+<script>
+  function initLecture(root: HTMLElement) {
+    const beats = Array.from(root.querySelectorAll<HTMLElement>("[data-beat]"));
+    const n = beats.length;
+    const modeBtns = Array.from(root.querySelectorAll<HTMLElement>("[data-mode-btn]"));
+    const countEl = root.querySelector<HTMLElement>("[data-count]");
+    const revealWrap = root.querySelector<HTMLElement>(".lecture-reveal");
+    const hint = root.querySelector<HTMLElement>("[data-hint]");
+
+    let mode = localStorage.getItem("lectureMode") || "summary";
+    let revealed = 1;
+
+    function render() {
+      const summary = mode === "summary";
+      root.setAttribute("data-mode", mode);
+      modeBtns.forEach((b) =>
+        b.setAttribute("aria-selected", b.dataset.modeBtn === mode ? "true" : "false")
+      );
+      if (revealWrap) revealWrap.style.display = summary ? "" : "none";
+      if (hint) hint.style.display = summary ? "" : "none";
+      revealed = Math.max(1, Math.min(revealed, n));
+      beats.forEach((beat, i) => {
+        const detail = beat.querySelector<HTMLElement>("[data-detail]");
+        if (summary) {
+          beat.classList.toggle("is-hidden", i >= revealed);
+          beat.classList.remove("detailed");
+          if (detail) detail.classList.add("is-hidden");
+        } else {
+          beat.classList.remove("is-hidden");
+          beat.classList.add("detailed");
+          if (detail) detail.classList.remove("is-hidden");
+        }
+      });
+      if (countEl) countEl.textContent = summary ? `${Math.min(revealed, n)} / ${n}` : "";
+    }
+
+    function setMode(m: string) {
+      mode = m;
+      try { localStorage.setItem("lectureMode", m); } catch (e) {}
+      render();
+    }
+    function next() { if (revealed < n) { revealed += 1; render(); } }
+
+    modeBtns.forEach((b) =>
+      b.addEventListener("click", () => setMode(b.dataset.modeBtn || "summary"))
+    );
+    root.querySelector("[data-reveal='next']")?.addEventListener("click", next);
+    root.querySelector("[data-reveal='all']")?.addEventListener("click", () => { revealed = n; render(); });
+    root.querySelector("[data-reveal='restart']")?.addEventListener("click", () => { revealed = 1; render(); });
+
+    // Click the last revealed summary to advance (but not when clicking a link/button).
+    beats.forEach((beat, i) => {
+      beat.addEventListener("click", (e) => {
+        if (mode !== "summary") return;
+        if ((e.target as HTMLElement).closest("a, button")) return;
+        if (i === revealed - 1) next();
+      });
+    });
+
+    (root as any).__lectureNext = next;
+    (root as any).__lectureIsSummary = () => mode === "summary";
+    render();
+  }
+
+  const roots = Array.from(document.querySelectorAll<HTMLElement>(".lecture"));
+  roots.forEach(initLecture);
+
+  // Arrow-right / space advances the first summary-mode lecture on the page.
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowRight" && e.key !== " ") return;
+    const t = e.target as HTMLElement | null;
+    const tag = t && t.tagName;
+    if (tag === "INPUT" || tag === "TEXTAREA" || (t && t.isContentEditable)) return;
+    const l = roots.find((r) => (r as any).__lectureIsSummary?.());
+    if (l) { e.preventDefault(); (l as any).__lectureNext?.(); }
+  });
+</script>

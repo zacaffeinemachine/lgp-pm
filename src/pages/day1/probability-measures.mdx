@@ -1,95 +1,133 @@
 ---
 layout: ../../layouts/Chapter.astro
 title: Probability Measures
-order: 4
+order: 3
 chapter: day1
 chapterTitle: Day 1 — Foundations
 blurb: A rule that weighs each outcome — what it is, what it means, and the handful of rules it must obey.
 description: The probability measure as a mass function on outcomes, its three defining properties, the frequentist meaning, and elementary consequences including the union bound.
 ---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
 
-A probability measure assigns a **weight** to each individual outcome, recording how
-likely it is. The probability of an **event** is then just the total weight inside it.
+A probability measure assigns a **weight** to each outcome; the probability of an event
+is the total weight inside it.
 
-> **Definition.** Let $\Omega$ be a finite sample space. A **probability measure** is a
-> function $\P : \Omega \to [0,1]$ whose values on the outcomes sum to $1$:
-> $$\sum_{\omega \in \Omega} \P(\omega) = 1.$$
-> The number $\P(\omega)$ is the **probability mass** of the outcome $\omega$.
+<Lecture>
 
-With masses in hand, the probability of any event $A \subseteq \Omega$ is the sum of
-the masses of its outcomes:
+<Beat>
+<Summary>
+
+**Definition** — a probability measure: masses on outcomes that sum to $1$.
+
+</Summary>
+<Detail>
+
+> Let $\Omega$ be a finite sample space. A **probability measure** is a function
+> $\P : \Omega \to [0,1]$ with $\sum_{\omega \in \Omega} \P(\omega) = 1$. The number
+> $\P(\omega)$ is the **probability mass** of the outcome $\omega$.
+
+The probability of an event $A \subseteq \Omega$ is the sum of its outcomes' masses:
 
 $$
 \P(A) := \sum_{\omega \in A} \P(\omega).
 $$
 
-(We write $\P$ both for the function on outcomes and the one on events; context makes
-clear which is meant.) Three consequences come up so often we name them.
+</Detail>
+</Beat>
 
-> **(P1) Total probability is $1$:** $\P(\Omega) = \sum_{\omega}\P(\omega) = 1$ — something always happens.
->
-> **(P2) Probabilities are non-negative:** $\P(A) = \sum_{\omega \in A}\P(\omega) \ge 0$.
->
-> **(P3) Disjoint events add:** if $A \cap B = \emptyset$, then $\P(A \cup B) = \P(A) + \P(B)$; and more generally $\P(A_1 \cup \cdots \cup A_n) = \P(A_1) + \cdots + \P(A_n)$ for pairwise-disjoint events.
+<Beat>
+<Summary>
+
+Three properties: total is $1$, non-negative, disjoint events add.
+
+</Summary>
+<Detail>
+
+> **(P1)** $\P(\Omega) = 1$ — something always happens.
+> **(P2)** $\P(A) \ge 0$ for every event.
+> **(P3)** if $A \cap B = \emptyset$ then $\P(A \cup B) = \P(A) + \P(B)$; more generally,
+> disjoint events $A_1, \dots, A_n$ satisfy $\P(A_1 \cup \cdots \cup A_n) = \P(A_1) + \cdots + \P(A_n)$.
 
 Almost every calculation rests on (P1) and (P3).
 
-## What does $\P(A)$ *mean*?
+</Detail>
+</Beat>
 
-The definition tells us how to *manipulate* probabilities, but not what the number
-*represents*. In what sense is $1/6$ the "right" probability of rolling a $3$?
+<Beat>
+<Summary>
 
-The most popular answer is the **frequentist interpretation**. Imagine repeating the
-experiment under identical conditions $N$ times and recording, for each event $A$, the
-fraction
+What $\P(A)$ *means* — the frequentist interpretation.
 
-$$
-\hat{p}_N(A) = \frac{\#\set{\text{trials in which } A \text{ occurred}}}{N}.
-$$
+</Summary>
+<Detail>
 
-The interpretation says $\P(A)$ is the long-run value of $\hat{p}_N(A)$ as $N$ grows.
-Toss a fair coin a thousand times and you see roughly $500$ heads; a million times,
-roughly $500{,}000$. The fraction stabilises near $1/2$, and we declare
-$\P(\text{heads}) = 1/2$.
+Repeat the experiment $N$ times and record the fraction
+$\hat{p}_N(A) = \#\set{\text{trials where } A \text{ occurred}} / N$. The frequentist
+interpretation says $\P(A)$ is the long-run value of $\hat{p}_N(A)$ as $N$ grows. Toss a
+fair coin a thousand times and you see roughly $500$ heads; the fraction stabilises near
+$1/2$, so $\P(\text{heads}) = 1/2$. Through this lens (P1)–(P3) become inevitable.
+
+A caution: this says what $\P(A)$ *means*, not how to *compute* it — we never run an
+experiment infinitely often. In practice we **model** the experiment (often by
+symmetry), write down $\Omega$ and $\P$, and compute. (That $\hat{p}_N(A) \to \P(A)$ is
+itself the **law of large numbers**, whose quantitative cousin, Chebyshev's inequality,
+appears on Day 5.)
 
 {/* WIDGET: frequentist convergence — toss a coin / roll a die N times, plot the running fraction approaching P(A) */}
 
-Read through this lens, (P1)–(P3) become *inevitable* rather than imposed: empirical
-fractions over all of $\Omega$ sum to $1$, are non-negative, and add over disjoint
-events exactly. A caution, though: this tells us what $\P(A)$ *means*, not how to
-*compute* it — we never run an experiment infinitely often. In practice we **model**
-the experiment (often by symmetry), write down $\Omega$ and $\P$, and compute. The
-frequentist picture is the bridge between model and reality. (That
-$\hat{p}_N(A) \to \P(A)$ is itself a theorem — the **law of large numbers** — whose
-quantitative cousin, Chebyshev's inequality, we meet on Day 5.)
+</Detail>
+</Beat>
 
-## Examples
+<Beat>
+<Summary>
+
+Examples — fair and biased coins, fair and loaded dice.
+
+</Summary>
+<Detail>
 
 {/* WIDGET: fair/biased coin builder — drag P(H), watch the masses sum to 1 and event probabilities update */}
 
-- **Fair coin.** $\Omega = \set{\texttt{H},\texttt{T}}$, $\P(\texttt{H}) = \P(\texttt{T}) = 1/2$. Masses sum to $1$.
-- **Biased coin.** Same $\Omega$, but $\P(\texttt{H}) = 2/3$, $\P(\texttt{T}) = 1/3$. Still sums to $1$ — so $\P$ is its own ingredient, separate from $\Omega$: one sample space carries infinitely many measures.
-- **Fair die.** $\P(k) = 1/6$ for each $k$. For $A = \set{2,4,6}$, $\P(A) = 3 \cdot \tfrac16 = \tfrac12$.
-- **Loaded die.** Same $\Omega$, but $\P(6) = 1/2$ and each other face $1/10$ (sum $= 5\cdot\tfrac1{10} + \tfrac12 = 1$). Now the *same* event $\set{2,4,6}$ has $\P(A) = \tfrac1{10}+\tfrac1{10}+\tfrac12 = \tfrac{7}{10}$. Same event, same $\Omega$ — different measure, different answer.
-- **Degenerate measure.** On $\Omega = \set{a,b,c}$, taking $\P(a)=1$, $\P(b)=\P(c)=0$ is legal but boring: $\set{b,c}$ has probability $0$.
+- **Fair coin.** $\P(\texttt{H}) = \P(\texttt{T}) = 1/2$.
+- **Biased coin.** Same $\Omega$, but $\P(\texttt{H}) = 2/3$, $\P(\texttt{T}) = 1/3$ — so $\P$ is its own ingredient, separate from $\Omega$.
+- **Fair die.** $\P(k) = 1/6$; for $A = \set{2,4,6}$, $\P(A) = \tfrac12$.
+- **Loaded die.** $\P(6) = 1/2$, others $1/10$. The *same* event $\set{2,4,6}$ now has $\P(A) = \tfrac1{10}+\tfrac1{10}+\tfrac12 = \tfrac{7}{10}$ — same event, different measure, different answer.
+- **Degenerate.** On $\set{a,b,c}$, $\P(a)=1$, $\P(b)=\P(c)=0$ is legal but boring.
 
-## Consequences of the rules
+</Detail>
+</Beat>
 
-A few simple consequences get used constantly.
+<Beat>
+<Summary>
 
-> **Elementary properties.** For events $A, B \subseteq \Omega$:
+Elementary properties — and the **union bound**.
+
+</Summary>
+<Detail>
+
+> For events $A, B \subseteq \Omega$:
 > 1. $\P(\emptyset) = 0$;
 > 2. $\P(A^c) = 1 - \P(A)$;
-> 3. if $A \subseteq B$, then $\P(A) \le \P(B)$;
+> 3. if $A \subseteq B$ then $\P(A) \le \P(B)$;
 > 4. $\P(A \cup B) = \P(A) + \P(B) - \P(A \cap B)$;
 > 5. $\P(A \cup B) \le \P(A) + \P(B)$ — the **union bound**.
 
-*Why:* (1) $\emptyset$ is disjoint from itself, so $\P(\emptyset) = 2\P(\emptyset)$,
-forcing $0$. (2) $A$ and $A^c$ are disjoint with union $\Omega$, so their probabilities
-sum to $1$. (3) Write $B = A \cup (B \setminus A)$ as a disjoint union. (4) Split both
-$A \cup B$ and $B$ into disjoint pieces and add. (5) Follows from (4) since
-$\P(A \cap B) \ge 0$.
+*Why:* (1) $\emptyset$ is disjoint from itself, so $\P(\emptyset) = 2\P(\emptyset)$. (2)
+$A$ and $A^c$ are disjoint with union $\Omega$. (3) $B = A \cup (B \setminus A)$ is a
+disjoint union. (4) Split $A \cup B$ and $B$ into disjoint pieces and add. (5) Follows
+from (4) since $\P(A \cap B) \ge 0$. The union bound extends to any number of events and
+is a workhorse of the workshop.
 
-The union bound extends to any number of events,
-$\P(A_1 \cup \cdots \cup A_n) \le \P(A_1) + \cdots + \P(A_n)$, and — despite its
-simplicity — will be one of the workhorses of the workshop.
+</Detail>
+</Beat>
+
+</Lecture>
+
+## Exercises
+
+1. A die is loaded so that $\P(6) = 1/2$ and each other face has probability $1/10$. Find $\P(\text{the roll is odd})$ and $\P(\text{the roll is at least } 5)$.
+2. For events $A, B$ with $\P(A) = 0.6$, $\P(B) = 0.5$, and $\P(A \cap B) = 0.2$, find $\P(A \cup B)$ and $\P(A^c)$.
+3. Using the two-event union bound, explain why $\P(A \cup B \cup C) \le \P(A) + \P(B) + \P(C)$ for any three events.
