@@ -1,0 +1,75 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Independence of Events
+order: 6
+chapter: day1
+chapterTitle: Day 1 — Foundations
+blurb: A multiplication rule that turns "and" into a product — plus a warning about when intuition gets it wrong.
+description: Independence and mutual independence via the multiplication rule, why intuition fails (permutation fixed points), and the avoid-all-events identity with its exponential bound.
+---
+
+Two events $A$ and $B$ are **independent** if
+
+$$
+\P(A \cap B) = \P(A) \cdot \P(B).
+$$
+
+Intuitively: knowing whether $A$ occurred does not change the probability of $B$. The
+definition is exactly this multiplication rule for the joint probability, and we use it
+in that form, without philosophy.
+
+More generally, events $A_1, \dots, A_n$ are **mutually independent** if for *every*
+subset of indices $i_1 < \cdots < i_k$,
+
+$$
+\P(A_{i_1} \cap \cdots \cap A_{i_k}) = \P(A_{i_1}) \cdots \P(A_{i_k}).
+$$
+
+One must check the rule for every subset, not only for pairs.
+
+## Intuition can mislead
+
+{/* WIDGET: fixed-point dependence — sample random permutations, highlight fixed points, compare P(A1 ∩ A2) to P(A1)P(A2) empirically */}
+
+Let $\pi$ be a uniformly random permutation of $\set{1,2,\dots,n}$ with $n \ge 2$, and
+let $A_i = \set{\pi(i) = i}$ be the event "$i$ is a fixed point." These *look* like they
+should be independent — the value at position $1$ seems unrelated to the value at
+position $2$ — yet they are not.
+
+Working in $\Omega = S_n$ (all $n!$ permutations, uniform), the permutations fixing
+$\pi(1) = 1$ number $(n-1)!$, so $\P(A_1) = (n-1)!/n! = 1/n$. Those fixing both
+$\pi(1)=1$ and $\pi(2)=2$ number $(n-2)!$, so
+
+$$
+\P(A_1 \cap A_2) = \frac{(n-2)!}{n!} = \frac{1}{n(n-1)}.
+$$
+
+If $A_1, A_2$ were independent this would equal $\P(A_1)\P(A_2) = 1/n^2$. Instead
+$\tfrac{1}{n(n-1)} > \tfrac{1}{n^2}$: knowing $\pi(1)=1$ makes $\pi(2)=2$ *more* likely,
+because once the value $1$ is used up, the value $2$ has one fewer competitor. The bias
+is small for large $n$ but real — exactly the kind of dependence informal reasoning
+misses.
+
+## A first useful identity
+
+A typical use of mutual independence is arguing that "none of a long list of bad things
+happens." Applying the multiplication rule to the *complementary* events turns this
+into a product, which is often far easier to estimate.
+
+> **Probability of avoiding many events.** If $A_1, \dots, A_n$ are mutually
+> independent, then
+> $$\P\!\left(\bigcap_{i=1}^n A_i^c\right) = \prod_{i=1}^n \P(A_i^c) = \prod_{i=1}^n \bigl(1 - \P(A_i)\bigr).$$
+
+*Why:* if $A_1, \dots, A_n$ are mutually independent then so are their complements
+$A_1^c, \dots, A_n^c$; the identity is then just the multiplication rule.
+
+{/* WIDGET: avoid-all-events — chain of n independent good/bad events; compare empirical P(all good) to the product and the e^{-Σ} bound */}
+
+A consequence we return to repeatedly: for any reals $x_i$,
+
+$$
+\prod_{i=1}^n (1 - x_i) \le \exp\!\left(-\sum_{i=1}^n x_i\right),
+$$
+
+since $1 - x \le e^{-x}$ for all real $x$. So even when the union bound is too crude, an
+independence argument can deliver sharp **exponential** decay.

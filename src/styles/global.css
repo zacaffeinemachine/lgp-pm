@@ -63,6 +63,18 @@ body {
 .chapter-nav a { color: var(--muted); transition: color 120ms; }
 .chapter-nav a:hover { color: var(--ink); }
 
+/* Callout boxes for definitions and key results (markdown blockquotes). */
+.prose blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+  margin: 1.5rem 0;
+  border-radius: 0 6px 6px 0;
+}
+.prose blockquote p { margin: 0.5rem 0; }
+.prose blockquote p:first-child { margin-top: 0; }
+.prose blockquote p:last-child { margin-bottom: 0; }
+
 /* Theme toggle icons */
 :root[data-theme="light"] .theme-icon-dark { display: none; }
 :root[data-theme="dark"]  .theme-icon-light { display: none; }

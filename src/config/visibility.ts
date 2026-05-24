@@ -27,6 +27,12 @@ export const VISIBLE_CHAPTERS: readonly string[] = [
 
 export const VISIBLE_PAGES: readonly string[] = [
   "day1/penneys-game",
+  "day1/why-formal-language",
+  "day1/sample-spaces-and-events",
+  "day1/probability-measures",
+  "day1/uniform-measure",
+  "day1/independence",
+  "day1/putting-it-together",
 ];
 
 export function isChapterVisible(slug: string): boolean {

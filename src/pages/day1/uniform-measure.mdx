@@ -1,0 +1,57 @@
+---
+layout: ../../layouts/Chapter.astro
+title: The Uniform Probability Measure
+order: 5
+chapter: day1
+chapterTitle: Day 1 — Foundations
+blurb: When every outcome is equally likely, probability becomes counting — and the birthday problem shows how surprising counting can be.
+description: The uniform measure as favourable-over-total, with dice and urn examples and the birthday problem worked in full.
+---
+
+When $\Omega$ is finite and we model every outcome as **equally likely**, the measure
+is forced: each singleton $\set{\omega}$ gets probability $1/\abs{\Omega}$. By (P3), the
+probability of any event is then
+
+$$
+\P(A) = \frac{\abs{A}}{\abs{\Omega}} = \frac{\#\set{\text{favourable outcomes}}}{\#\set{\text{total outcomes}}}.
+$$
+
+This is the **uniform probability measure** (the equiprobable model). Almost every
+Day 1 problem uses it — so probability reduces to **counting**.
+
+**Two dice.** Roll a fair die twice, recording $(a,b)$; $\Omega = \set{1,\dots,6}^2$, so
+$\abs{\Omega} = 36$. The event $a+b = 7$ has six outcomes
+$(1,6), (2,5), \dots, (6,1)$, so $\P = 6/36 = 1/6$.
+
+**An urn.** A box has $5$ red and $3$ blue balls; draw two without replacement;
+probability both are red? Take $\Omega$ to be unordered pairs of balls, so
+$\abs{\Omega} = \binom{8}{2} = 28$; the red pairs number $\binom{5}{2} = 10$, giving
+$10/28 = 5/14$. Counting *ordered* pairs instead gives $\tfrac{5\cdot 4}{8 \cdot 7} = \tfrac{20}{56} = \tfrac{5}{14}$ — the same answer, as it must, provided we count consistently.
+
+## The birthday problem
+
+A classroom has $30$ students. Assuming each birthday is equally likely to be any of
+$365$ days, chosen independently, what is the probability that **some two share** a
+birthday?
+
+The cleanest sample space is $\Omega = \set{1, \dots, 365}^{30}$ with the uniform
+measure: an outcome is an ordered list of $30$ birthdays, so $\abs{\Omega} = 365^{30}$.
+It is easier to count the **complement** — "all $30$ distinct" — as ordered tuples of
+distinct days:
+
+$$
+365 \cdot 364 \cdot 363 \cdots 336 = \frac{365!}{335!}.
+$$
+
+Therefore
+
+$$
+\P(\text{all distinct}) = \frac{365 \cdot 364 \cdots 336}{365^{30}} \approx 0.294,
+$$
+
+so the probability of a shared birthday is about $0.706$ — better than two in three.
+
+{/* WIDGET: birthday simulator — slider for class size, show P(shared) and where it crosses 50% and 90% */}
+
+The lesson, which returns all week: with $30$ items dropped into $365$ slots,
+**collisions are far more likely** than the size of the room alone suggests.

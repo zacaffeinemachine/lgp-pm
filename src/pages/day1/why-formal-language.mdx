@@ -1,0 +1,74 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Why a Formal Language?
+order: 2
+chapter: day1
+chapterTitle: Day 1 — Foundations
+blurb: Two students, one coin, two different answers. What probability really needs before it can mean anything.
+description: Why probability needs an explicit sample space and measure — the two-students paradox and Bertrand's random-chord paradox.
+---
+
+The workshop is about a powerful proof technique — the **probabilistic method** — but
+the technique rests on a small handful of ideas we need to make precise first. Before
+we write down any definitions, let us see what goes wrong when we don't.
+
+## A coin, tossed twice
+
+Two students are asked: *a fair coin is tossed twice; what is the chance that both
+tosses show heads?*
+
+- The **first** reasons: "There are three outcomes — two heads, two tails, or one of
+  each — so the answer is $1/3$."
+- The **second** insists: "There are four equally likely outcomes — `HH`, `HT`, `TH`,
+  `TT` — so the answer is $1/4$."
+
+Both sound plausible read quickly, and both cannot be right. Yet neither has done
+anything obviously foolish: each listed "the possible outcomes" and counted the
+favourable ones. The disagreement is not about arithmetic. It is about **what
+experiment is being performed**, and which list of outcomes is the honest one.
+
+Once we agree to record the two tosses *in order* — so `HH`, `HT`, `TH`, `TT` is the
+right list and each is equally likely — the answer is forced: $1/4$. The first
+student's list wasn't wrong arithmetically; it was wrong because it folded two
+genuinely different outcomes (first-head-then-tail, and its reverse) into one entry
+while still pretending each entry was equally likely.
+
+This small disagreement is the whole story in miniature. The phrase "the probability
+of $X$" is only half a sentence. It is completed only when we also commit to **which
+experiment** $X$ refers to and **how likelihoods are assigned** to its outcomes. Change
+either ingredient and the same English words can yield a different number.
+
+## "At random" makes it worse
+
+The trouble grows the moment the words *at random* appear. Here is a beautiful old
+problem: pick a chord of a circle "at random"; what is the probability that it is
+longer than the side of the inscribed equilateral triangle? Three perfectly reasonable
+readings of "random chord" give three different answers.
+
+- Pick the two **endpoints** uniformly and independently on the circle → probability $1/3$.
+- Pick a **radius**, then a point on it uniformly, and take the chord perpendicular
+  there → probability $1/2$.
+- Pick the **midpoint** of the chord uniformly from the disc → probability $1/4$.
+
+{/* WIDGET: random-chord selector — pick a method, sample many chords, watch the fraction longer-than-side converge to 1/3, 1/2, or 1/4 */}
+
+None of the three is *wrong*. They are three different experiments wearing the same
+English costume. The question has no answer until the questioner says *which* random
+chord they mean. Even "pick a student at random from a class of thirty" hides the same
+trap: drawing a roll number from a bowl, taking the first to arrive tomorrow, or
+weighting by some unstated criterion are different procedures that place different
+probabilities on the same event.
+
+## The escape is discipline
+
+The way out is not cleverness; it is discipline. Before we calculate anything, we
+commit — in writing — to two ingredients:
+
+> A set $\Omega$ listing all conceivable outcomes of the experiment, and a rule $\P$
+> that assigns to each subset of $\Omega$ a number in $[0,1]$ representing how likely
+> the outcome is to lie in that subset.
+
+Once these are fixed, every probability becomes a well-defined number, and a
+disagreement like our two students' reduces to an honest question: which $\Omega$ and
+which $\P$ correctly model the experiment? The rest of Day 1 makes this discipline
+precise, starting with the language of sample spaces and events.

@@ -1,0 +1,65 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Sample Spaces and Events
+order: 3
+chapter: day1
+chapterTitle: Day 1 — Foundations
+blurb: The vocabulary every calculation starts from — experiment, outcome, sample space, event — and how to combine events.
+description: Sample spaces, outcomes, and events as subsets, with worked examples and the set operations that combine events.
+---
+
+With the discipline of the previous page in mind, we collect the formal vocabulary we
+will use all week: experiment, outcome, sample space, and event.
+
+> **Definition.** A **random experiment** is any procedure whose outcome is not
+> predetermined. The set of all conceivable outcomes is the **sample space**, usually
+> written $\Omega$ (capital Omega); its elements are **outcomes**. Any subset
+> $A \subseteq \Omega$ is an **event**, and we say $A$ *occurs* when the actual outcome
+> lies in $A$.
+
+We always insist that $\Omega$ is written down **before** any computation. A few small
+examples fix the vocabulary — in each, describe the experiment, write $\Omega$
+explicitly, then name some events as subsets.
+
+**Roll a fair die once.** $\Omega = \set{1,2,3,4,5,6}$. "The roll is even" is
+$A = \set{2,4,6}$; "at least $5$" is $\set{5,6}$; "prime" is $\set{2,3,5}$.
+
+**Toss a coin three times, recording each toss in order.**
+
+$$
+\Omega = \set{\texttt{H},\texttt{T}}^3 = \set{\texttt{HHH},\texttt{HHT},\texttt{HTH},\texttt{HTT},\texttt{THH},\texttt{THT},\texttt{TTH},\texttt{TTT}},
+$$
+
+an $8$-element set. "At least two heads" is $\set{\texttt{HHH},\texttt{HHT},\texttt{HTH},\texttt{THH}}$;
+"the first toss is a tail" is $\set{\texttt{THH},\texttt{THT},\texttt{TTH},\texttt{TTT}}$;
+"all three the same" is $\set{\texttt{HHH},\texttt{TTT}}$.
+
+{/* WIDGET: two-toss visual — show the four equally-likely outcomes HH, HT, TH, TT and why grouping "one of each" breaks equal likelihood */}
+
+**Draw one card from a $52$-card deck.** $\Omega$ is the set of all $52$ cards, so
+$\abs{\Omega} = 52$. "A heart" is a $13$-card subset; "a face card" is the $12$-card
+subset of jacks, queens, kings; "a red ace" is $\set{A\heartsuit, A\diamondsuit}$.
+
+**Roll two distinguishable dice** (one red, one blue), recording the ordered pair
+$(a,b)$. Then $\Omega = \set{1,\dots,6}^2$, a $36$-element set. "The sum is $7$" is
+$\set{(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)}$; "both show the same" is
+$\set{(1,1),(2,2),(3,3),(4,4),(5,5),(6,6)}$; "the red die is strictly larger" is the
+$15$-element set of pairs with $a > b$.
+
+**A family has two children; record genders in birth order.**
+$\Omega = \set{BB, BG, GB, GG}$. "Both girls" is $\set{GG}$; "at least one boy" is
+$\set{BB, BG, GB}$; "different genders" is $\set{BG, GB}$.
+
+## Combining events
+
+Because events are subsets of $\Omega$, we combine them with the usual set operations.
+Fix the running example of one die roll, $\Omega = \set{1,2,3,4,5,6}$, with
+$A = \set{2,4,6}$ ("even") and $B = \set{5,6}$ ("at least $5$").
+
+- **Union** $A \cup B$ — "$A$ *or* $B$ (or both)": here $\set{2,4,5,6}$.
+- **Intersection** $A \cap B$ — "$A$ *and* $B$ together": here $\set{6}$, the only even roll that is at least $5$.
+- **Complement** $A^c = \Omega \setminus A$ — "$A$ does *not* occur": here $\set{1,3,5}$, the odd rolls.
+
+Two events are **mutually exclusive** (or **disjoint**) when they cannot occur
+together, i.e. $A \cap B = \emptyset$. Our $A$ and $B$ are *not* disjoint (they share
+$6$); but $A$ and $C = \set{1,3}$ are, since no roll is both even and odd.
