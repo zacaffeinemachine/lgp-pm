@@ -16,6 +16,12 @@
   --coin-heads: #d4a017;
   --coin-tails: #9ca3af;
   --coin-ink: #18181b;
+
+  /* Chessboard (Guarini knight puzzles in the graphs appendix) */
+  --sq-light: #f0d9b5;
+  --sq-dark: #b58863;
+  --sq-forbidden: #5c3a24;
+  --piece: #18181b;
 }
 
 :root[data-theme="dark"] {
@@ -31,6 +37,12 @@
   --coin-heads: #eab308;
   --coin-tails: #cbd5e1;
   --coin-ink: #18181b;
+
+  /* Chessboard (Guarini knight puzzles in the graphs appendix) */
+  --sq-light: #6b4a33;
+  --sq-dark: #3f2a1e;
+  --sq-forbidden: #1a0f09;
+  --piece: #f4f4f5;
 }
 
 html {

@@ -21,6 +21,11 @@ const url = Astro.url.pathname.replace(/\/+$/, "");
 const pageSlug = url.split(`/${chapter}/`)[1] ?? "";
 const pageVisible = isPageVisible(chapter, pageSlug);
 
+// Appendices are not "days": adjust the breadcrumb root and the TOC label.
+const isAppendix = chapter === "appendix";
+const homeLabel = isAppendix ? "Home" : "Days";
+const tocLabel = isAppendix ? "In this appendix" : "In this day";
+
 // Collect sibling sub-pages for prev/next nav and the chapter TOC,
 // filtered to those the student is currently allowed to see.
 const allPages = import.meta.glob("../pages/**/*.mdx", { eager: true }) as Record<
@@ -50,7 +55,7 @@ const next = currentIdx >= 0 && currentIdx < siblings.length - 1 ? siblings[curr
   {!pageVisible && (
     <div class="text-center py-24">
       <nav class="chapter-nav text-sm mb-8 inline-block">
-        <a href={base + "/"}>Days</a>
+        <a href={base + "/"}>{homeLabel}</a>
       </nav>
       <h1 class="text-3xl font-semibold tracking-tight mb-3">Not yet released</h1>
       <p class="text-[var(--muted)]">
@@ -63,7 +68,7 @@ const next = currentIdx >= 0 && currentIdx < siblings.length - 1 ? siblings[curr
   {pageVisible && (
   <>
   <nav class="chapter-nav text-sm mb-6">
-    <a href={base + "/"}>Days</a>
+    <a href={base + "/"}>{homeLabel}</a>
     <span class="mx-2">·</span>
     <a href={`${base}/${chapter}/`}>{chapterTitle}</a>
     <span class="mx-2">·</span>
@@ -76,7 +81,7 @@ const next = currentIdx >= 0 && currentIdx < siblings.length - 1 ? siblings[curr
       aria-label={`Pages in ${chapterTitle}`}
     >
       <div class="text-xs uppercase tracking-wider text-[var(--muted)] mb-2">
-        In this day
+        {tocLabel}
       </div>
       <ol class="space-y-1 text-sm">
         {siblings.map((s, i) => {

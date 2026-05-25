@@ -3,16 +3,16 @@ interface Props {
   href: string;
   title: string;
   blurb: string;
-  number: number;
+  kicker: string;
 }
-const { href, title, blurb, number } = Astro.props;
+const { href, title, blurb, kicker } = Astro.props;
 ---
 <a
   href={href}
   class="block p-6 border border-[var(--rule)] rounded-lg hover:border-[var(--accent)] transition-colors"
 >
   <div class="text-xs uppercase tracking-wider text-[var(--muted)] mb-2">
-    Day {number}
+    {kicker}
   </div>
   <h2 class="text-xl font-semibold mb-2 tracking-tight">{title}</h2>
   <p class="text-sm text-[var(--muted)] leading-relaxed">{blurb}</p>
