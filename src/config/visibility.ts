@@ -45,6 +45,7 @@ export const VISIBLE_PAGES: readonly string[] = [
   // Appendix — A Primer on Graphs (gated by the commented "appendix" chapter above).
   "appendix/knight-moves",
   "appendix/swap-knights",
+  "appendix/row-swap",
   "appendix/classical",
   "appendix/greater-challenge",
   "appendix/graphs-vertices-edges",

@@ -156,7 +156,7 @@ follow dark mode. **Keep this table current.**
 | `widgets/DegreeSum.tsx`                | day2/degree-sum, appendix/degree-and-handshake |
 | `widgets/ProductRule.tsx`              | day2/independence                    |
 | `games/KnightPuzzle.tsx`               | appendix/knight-moves                |
-| `games/SwapKnightsPuzzle.tsx`          | appendix/swap-knights, appendix/classical |
+| `games/SwapKnightsPuzzle.tsx`          | appendix/swap-knights, appendix/row-swap, appendix/classical |
 | `games/GreaterChallengePuzzle.tsx`     | appendix/greater-challenge           |
 
 (Day 2's `indicators`, `distribution`, and `key-move` pages are text-only by design.)
@@ -207,8 +207,8 @@ Prefer `npm run build` to catch errors before pushing (push = deploy).
   section's three exercises.
 - **Days 3–5 + Bonus:** not built yet (placeholder comment in `index.astro`).
 - **Appendix — A Primer on Graphs:** fully built and **released** —
-  `"appendix"` is active in `VISIBLE_CHAPTERS`; all 12 pages are live. Three ported Guarini
-  knight-puzzle pages (`knight-moves`, `swap-knights`, `classical`) + a bridge
+  `"appendix"` is active in `VISIBLE_CHAPTERS`; all 13 pages are live. Four ported Guarini
+  knight-puzzle pages (`knight-moves`, `swap-knights`, `row-swap`, `classical`) + a bridge
   puzzle (`greater-challenge`, the ten-square tree-board variant ported from the
   MathematicalThinking site, with a riddle-gated hidden-graph overlay), then
   eight lecture pages mirroring `Appendices/Graphs.tex` (`graphs-vertices-edges`,
