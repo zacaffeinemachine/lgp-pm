@@ -51,15 +51,29 @@
         const detail = beat.querySelector<HTMLElement>("[data-detail]");
         const isFull = beat.hasAttribute("data-full");
         if (summary) {
-          beat.classList.toggle("is-hidden", i >= revealed);
+          const isRevealed = i < revealed;
+          beat.classList.toggle("is-hidden", !isRevealed);
           beat.classList.remove("detailed");
           // Normal beats show only their summary; "full" beats (e.g. the
-          // closing Exercises) reveal their detail too, once reached.
-          if (detail) detail.classList.toggle("is-hidden", !isFull);
+          // closing Exercises) reveal their whole detail once reached. A beat
+          // that holds an interactive widget reveals *just the widget* (prose
+          // stays hidden) once reached, so it can be demoed live in class.
+          if (detail) {
+            const hasWidget = !!detail.querySelector("astro-island");
+            if (isFull) {
+              detail.classList.remove("is-hidden", "widgets-only");
+            } else if (hasWidget && isRevealed) {
+              detail.classList.remove("is-hidden");
+              detail.classList.add("widgets-only");
+            } else {
+              detail.classList.add("is-hidden");
+              detail.classList.remove("widgets-only");
+            }
+          }
         } else {
           beat.classList.remove("is-hidden");
           beat.classList.add("detailed");
-          if (detail) detail.classList.remove("is-hidden");
+          if (detail) detail.classList.remove("is-hidden", "widgets-only");
         }
       });
       if (countEl) countEl.textContent = summary ? `${Math.min(revealed, n)} / ${n}` : "";
@@ -83,7 +97,9 @@
     beats.forEach((beat, i) => {
       beat.addEventListener("click", (e) => {
         if (mode !== "summary") return;
-        if ((e.target as HTMLElement).closest("a, button")) return;
+        // Don't advance when interacting with a link, a control, or a revealed
+        // widget (its detail is shown in summary mode for live demos).
+        if ((e.target as HTMLElement).closest("a, button, [data-detail]")) return;
         if (i === revealed - 1) next();
       });
     });

@@ -161,6 +161,12 @@ body {
 .beat { margin: 0 0 1.1rem; }
 .is-hidden { display: none !important; }
 
+/* Summary view: a revealed beat carrying a widget surfaces *just* the widget
+   (its prose siblings stay hidden) so it can be demoed live during class. */
+.beat-detail.widgets-only { margin-top: 0.6rem; }
+.beat-detail.widgets-only > * { display: none; }
+.beat-detail.widgets-only > astro-island { display: contents; }
+
 /* Summary view: headlines as a stepped list with an accent tick. */
 .lecture[data-mode="summary"] .beat {
   padding: 0.5rem 0 0.5rem 1rem;

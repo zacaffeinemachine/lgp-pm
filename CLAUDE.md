@@ -133,6 +133,13 @@ Structure inside an MDX body:
   in `Lecture.astro` — plain DOM, no React.
 - `<Beat full>` is for content that must appear in full at the end (the closing
   Exercises block).
+- **Widgets surface in Summary mode.** A normal beat hides its `<Detail>` in
+  Summary mode, *except* that if the detail contains an interactive widget
+  (`<astro-island>`), the widget alone is revealed once the beat is reached
+  (its prose siblings stay hidden) — so it can be demoed live in class. This is
+  the `.widgets-only` path in `Lecture.astro` + `global.css`; clicks inside a
+  revealed detail no longer advance the lecture. Relies on each widget being a
+  direct child of its `<Detail>` (own line, blank-line separated in MDX).
 
 ## Interactive widgets
 
