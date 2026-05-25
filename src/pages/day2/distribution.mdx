@@ -1,0 +1,120 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Specifying a Variable by its Distribution
+order: 5
+chapter: day2
+chapterTitle: Day 2 — Random Variables, Expectation, and Linearity
+blurb: Why we can say "let X be uniform on V" without ever naming a sample space — expectation sees only the distribution, not the space beneath it.
+description: The distribution of a random variable, why expectation depends only on it, and the licence to leave the sample space implicit.
+---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
+
+On Day 1 every experiment came with an explicit $\Omega$. Today we have already begun to drift —
+"toss $n$ fair coins" and "let $\sigma$ be a uniformly random permutation" were written with no
+$\Omega$ in sight. This page settles why that is allowed: the sample space is still there, we have
+simply learned we rarely need to look at it.
+
+<Lecture>
+
+<Beat>
+<Summary>
+
+**Definition** — the distribution (or law) of $X$ is the table $t \mapsto \P(X = t)$.
+
+</Summary>
+<Detail>
+
+> The **distribution** of a random variable $X$ with target set $T$ is the assignment
+> $$ t \longmapsto \P(X = t), \qquad t \in T, $$
+> recording how often $X$ takes each value.
+
+The distribution forgets the outcome space and remembers only the values $X$ produces and how
+often. We write $X \sim \mathrm{Uniform}(V)$ for "$X$ has the uniform law on $V$"; the symbol
+$\sim$ is read *is distributed as*.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+Two utterly different experiments can share one distribution — a coin flip and an even/odd die.
+
+</Summary>
+<Detail>
+
+Compare $X_1$ on $\Omega_1 = \set{\texttt{H}, \texttt{T}}$ with $X_1(\texttt{H}) = 1, X_1(\texttt{T}) = 0$,
+against $X_2$ on $\Omega_2 = \set{1, \ldots, 6}$ with $X_2 = 1$ on evens and $0$ on odds. The
+experiments could hardly be more different, yet each variable takes $1$ with probability $\tfrac12$
+and $0$ with probability $\tfrac12$ — the **same** distribution.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+Expectation cannot tell the difference — it reads off only the distribution.
+
+</Summary>
+<Detail>
+
+The value-by-value formula $\E[X] = \sum_k k\,\P(X = k)$ uses only the numbers $\P(X = k)$ — exactly
+the distribution. The space $\Omega$ enters the definition $\sum_\omega X(\omega)\P(\omega)$ but
+drops out of the reformulation. So $\E[X_1] = 1\cdot\tfrac12 + 0\cdot\tfrac12 = \tfrac12 = \E[X_2]$,
+as the equal distributions force.
+
+This is the licence: rather than build $\Omega$ first, we may say "**let $X$ be a variable with
+such-and-such distribution**" and proceed. Behind the scenes some $(\Omega, \P)$ has been chosen; we
+just never need its details when all we compute is an expectation.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+A caveat, and why it will not bite today — sums need a common space, but linearity rescues us anyway.
+
+</Summary>
+<Detail>
+
+The "$\Omega$ does not matter" argument covers one variable at a time. To form a sum
+$X_1 + \cdots + X_n$ we need them on a *common* space, and one might fear $\E[X_1 + \cdots + X_n]$
+depends on how they relate there. Linearity rules this out:
+
+$$
+\E[X_1 + \cdots + X_n] = \E[X_1] + \cdots + \E[X_n],
+$$
+
+and each term on the right uses one distribution alone. So whenever the question is the expectation
+of a sum, the joint behaviour never enters — we trade joint bookkeeping for marginal lookups.
+
+The escape is genuine but not unlimited. Some quantities — the **variance of a sum**, which we meet
+on Day 5 — really do feel the joint distribution. Until then, as long as we compute $\E[\cdot]$, the
+underlying $\Omega$ can stay out of sight.
+
+</Detail>
+</Beat>
+
+<Beat full>
+<Summary>
+
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
+
+1. Let $S$ be the sum of two fair dice. Write out its distribution: the value of $\P(S = k)$ for each $k \in \set{2, 3, \ldots, 12}$.
+2. Describe two experiments, on two *different* sample spaces, each producing a random variable uniform on $\set{1, 2, 3}$.
+3. Let $X \sim \mathrm{Uniform}(\set{1, 2, \ldots, n})$. Using only the distribution of $X$, compute $\E[X]$.
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>

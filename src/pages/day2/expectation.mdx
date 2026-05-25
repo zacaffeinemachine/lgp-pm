@@ -1,0 +1,137 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Expectation
+order: 2
+chapter: day2
+chapterTitle: Day 2 — Random Variables, Expectation, and Linearity
+blurb: The long-run average of a readout, computed as a weighted sum of its values. Why the expectation need not be a value the variable ever takes.
+description: The expected value of a real-valued random variable, the value-by-value formula, and worked examples including dice, coins, and permutations.
+---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
+import ExpectationSim from "../../components/widgets/ExpectationSim.tsx";
+
+The expectation of a random variable is the long-run **average** value it produces over many
+repetitions of the experiment. On a finite space this is exactly the weighted average of the
+values, with weights given by the probabilities.
+
+<Lecture>
+
+<Beat>
+<Summary>
+
+**Definition** — $\E[X] = \sum_{\omega} X(\omega)\,\P(\omega)$, the average of the values weighted by their probabilities.
+
+</Summary>
+<Detail>
+
+> Let $X$ be a **real-valued** random variable on a finite probability space $(\Omega, \P)$. Its
+> **expectation** (or **mean**) is
+> $$ \E[X] = \sum_{\omega \in \Omega} X(\omega)\,\P(\omega). $$
+
+Expectation needs values we can add and weight, which is why we insist $X$ be real-valued. For a
+non-numerical target set, "average" has no meaning.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+The value-by-value formula $\E[X] = \sum_k k\,\P(X = k)$ is usually the convenient one.
+
+</Summary>
+<Detail>
+
+Grouping the outcomes by the value they produce gives the equivalent form
+
+$$
+\E[X] = \sum_k k \cdot \P(X = k),
+$$
+
+where $k$ ranges over the values $X$ actually takes. The two formulas agree because the second
+simply collects all outcomes with $X(\omega) = k$ into one term. Note that $\E[X]$ need not equal
+any value $X$ ever takes — "average" and "typical" are different things.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+Example — a fair die has $\E[X] = 3.5$, a value it never shows.
+
+</Summary>
+<Detail>
+
+With $\Omega = \set{1, \ldots, 6}$ uniform,
+
+$$
+\E[X] = \sum_{k=1}^{6} k \cdot \tfrac16 = \frac{1 + 2 + \cdots + 6}{6} = \tfrac{21}{6} = 3.5.
+$$
+
+Roll a die many times and the running average settles on $3.5$ — even though no single roll is
+ever $3.5$. Expectation is the balance point of the distribution.
+
+<ExpectationSim client:visible />
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+Example — three coins average $1.5$ heads; a die loaded toward six averages $4.5$.
+
+</Summary>
+<Detail>
+
+- **Three fair coins.** With the distribution $\tfrac18, \tfrac38, \tfrac38, \tfrac18$ from the previous page, $\E[X] = 0\cdot\tfrac18 + 1\cdot\tfrac38 + 2\cdot\tfrac38 + 3\cdot\tfrac18 = \tfrac{12}{8} = 1.5$.
+- **A loaded die.** If $\P(6) = \tfrac12$ and $\P(k) = \tfrac{1}{10}$ for $k \in \set{1, \ldots, 5}$, then $\E[X] = (1+2+3+4+5)\cdot\tfrac{1}{10} + 6\cdot\tfrac12 = 1.5 + 3 = 4.5$. The heavy mass on $6$ pulls the mean a full unit above the fair value.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+Example — a random shuffle of three labels fixes exactly $1$ label on average.
+
+</Summary>
+<Detail>
+
+Take $\Omega = S_3$ uniform, and let $X(\sigma)$ count the **fixed points** — indices $i$ with
+$\sigma(i) = i$. Listing the six orderings $\sigma(1)\sigma(2)\sigma(3)$ and their fixed-point
+counts,
+
+$$
+123 \mapsto 3, \quad 132 \mapsto 1, \quad 213 \mapsto 1, \quad 231 \mapsto 0, \quad 312 \mapsto 0, \quad 321 \mapsto 1,
+$$
+
+so $\E[X] = 0\cdot\tfrac26 + 1\cdot\tfrac36 + 3\cdot\tfrac16 = 1$. Strikingly, the answer stays
+exactly $1$ for shuffles of $n$ labels for *every* $n$ — and the route through linearity, two
+pages on, is far shorter than this enumeration.
+
+</Detail>
+</Beat>
+
+<Beat full>
+<Summary>
+
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
+
+1. A fair four-sided die shows one of $1, 2, 3, 4$, each with probability $1/4$. Find $\E[X]$ for $X$ the number shown.
+2. Let $X$ be the number of heads in two fair coin tosses. Using the value-by-value formula and the distribution from the previous page's exercises, compute $\E[X]$.
+3. A random variable $X$ takes the value $2$ with probability $1/3$ and $5$ with probability $2/3$. Compute $\E[X]$, and confirm $X$ never takes this value.
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>

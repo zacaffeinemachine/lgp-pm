@@ -1,0 +1,104 @@
+---
+layout: ../../layouts/Chapter.astro
+title: A First Application — The Degree-Sum Formula
+order: 6
+chapter: day2
+chapterTitle: Day 2 — Random Variables, Expectation, and Linearity
+blurb: "Our first proof by expectation: the degrees of a graph sum to twice its edge count, shown by computing one average two different ways."
+description: The degree-sum formula proved by computing the expected degree of a random vertex in two ways, with the handshake corollary.
+---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
+import DegreeSum from "../../components/widgets/DegreeSum.tsx";
+
+Time to use expectation to *prove* something. The target is a basic identity of graph theory, and
+the proof is a template we will reuse all week: compute one expectation in two different ways and
+equate the answers.
+
+<Lecture>
+
+<Beat>
+<Summary>
+
+Vocabulary — a graph $G = (V, E)$, and the degree $\deg(v)$ counting the edges at a vertex.
+
+</Summary>
+<Detail>
+
+> A **graph** $G = (V, E)$ has a finite **vertex set** $V$ and an **edge set** $E \subseteq \binom{V}{2}$
+> of unordered pairs of distinct vertices. The **degree** $\deg(v)$ is the number of edges containing $v$.
+
+Two sanity checks. In a triangle every vertex has degree $2$, so $\sum_v \deg(v) = 6 = 2 \cdot 3$,
+twice the edge count. In a star with one centre and four leaves, $\sum_v \deg(v) = 4 + 4\cdot1 = 8 = 2\cdot4$.
+Both land on twice the number of edges.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+**Degree-sum formula** — $\sum_{v \in V} \deg(v) = 2\abs{E}$ in every finite graph.
+
+</Summary>
+<Detail>
+
+> For a finite graph $G = (V, E)$,
+> $$ \sum_{v \in V} \deg(v) = 2\abs{E}. $$
+
+Build any graph below by clicking pairs of vertices. The degree sum and $2\abs{E}$ stay glued
+together, because adding or deleting an edge changes both by exactly $2$.
+
+<DegreeSum client:visible />
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+The proof — compute the expected degree of a random vertex two ways.
+
+</Summary>
+<Detail>
+
+Pick a vertex $U$ uniformly at random, so $\P(U = v) = 1/\abs{V}$. **First way**, straight from the
+definition of expectation:
+
+$$
+\E[\deg(U)] = \sum_{v \in V} \deg(v)\,\P(U = v) = \frac{1}{\abs{V}} \sum_{v \in V} \deg(v). \tag{$*$}
+$$
+
+**Second way.** A vertex's degree counts the edges at it, so $\deg(U) = \sum_{e \in E} \one_{\set{U \in e}}$.
+Each edge has two of the $\abs{V}$ vertices, so $\P(U \in e) = 2/\abs{V}$, and by linearity
+
+$$
+\E[\deg(U)] = \sum_{e \in E} \P(U \in e) = \frac{2\abs{E}}{\abs{V}}. \tag{$**$}
+$$
+
+Equating $(*)$ and $(**)$ and multiplying by $\abs{V}$ gives $\sum_v \deg(v) = 2\abs{E}$. The same
+idea — one expectation, two counts — will return for Sperner's theorem tomorrow.
+
+</Detail>
+</Beat>
+
+<Beat full>
+<Summary>
+
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
+
+1. Verify the degree-sum formula directly for the $4$-cycle (a square: four vertices, each joined to its two neighbours): compute $\sum_v \deg(v)$ and $2\abs{E}$ separately.
+2. A graph has $10$ vertices, every one of degree $3$. Use the degree-sum formula to find its number of edges.
+3. Using the degree-sum formula, show that in any finite graph the number of vertices of odd degree is even.
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>

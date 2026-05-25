@@ -1,0 +1,122 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Independence of Random Variables
+order: 8
+chapter: day2
+chapterTitle: Day 2 — Random Variables, Expectation, and Linearity
+blurb: When one readout carries no information about another. The factorisation that defines it, and the product rule it buys — E[XY] = E[X]E[Y].
+description: Independence of random variables as factorisation of joint probabilities, the product rule for expectations, and the i.i.d. shorthand.
+---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
+import ProductRule from "../../components/widgets/ProductRule.tsx";
+import FixedPoints from "../../components/widgets/FixedPoints.tsx";
+
+On Day 1 two *events* were independent when $\P(A \cap B) = \P(A)\P(B)$. The same idea — one quantity
+tells you nothing about the other — has a counterpart for random variables, and it is one of the most
+important structural conditions a tuple of variables can satisfy.
+
+<Lecture>
+
+<Beat>
+<Summary>
+
+**Definition** — $X$ and $Y$ are independent when $\P(X = x,\, Y = y) = \P(X = x)\,\P(Y = y)$ for all values.
+
+</Summary>
+<Detail>
+
+> Random variables $X, Y$ on a common finite space are **independent** if, for every pair of values $x, y$,
+> $$ \P(X = x,\, Y = y) = \P(X = x)\,\P(Y = y). $$
+> More generally $X_1, \ldots, X_n$ are **mutually independent** if every joint probability factors:
+> $\P(X_1 = x_1, \ldots, X_n = x_n) = \prod_i \P(X_i = x_i)$.
+
+Two readings. *In events:* the value-events $\set{X_1 = x_1}, \ldots, \set{X_n = x_n}$ are independent
+in the Day 1 sense, for every choice of values at once. *In distributions:* the joint distribution is
+completely pinned down by the individual ones.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+Examples and non-examples — two coins (independent), two entries of a permutation (not), and $X$ with itself (the extreme failure).
+
+</Summary>
+<Detail>
+
+- **Two fair coins.** On $\set{\texttt{H}, \texttt{T}}^2$ uniform, $\P(X_1 = \texttt{H}, X_2 = \texttt{H}) = \tfrac14 = \tfrac12\cdot\tfrac12$, and likewise for the other pairs. Independent.
+- **Two entries of a random permutation.** Each $X_i = \sigma(i)$ is uniform, so $\P(X_i = k) = \tfrac1n$. But $\P(X_1 = k, X_2 = k) = 0$ while $\P(X_1 = k)\P(X_2 = k) = \tfrac1{n^2} \neq 0$. *Not* independent — knowing $\sigma(1)$ rules out a value for $\sigma(2)$.
+- **A variable and itself.** For non-constant $X$, the pair $(X, X)$ is never independent: joint probability lives only on the diagonal.
+
+The simulator confirms the permutation case: $\P(\text{positions 1 and 2 both fixed})$ tracks
+$\tfrac{1}{n(n-1)}$, strictly above the $\tfrac{1}{n^2}$ independence would predict.
+
+<FixedPoints client:visible />
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+**Product rule** — for independent variables, $\E[XY] = \E[X]\,\E[Y]$.
+
+</Summary>
+<Detail>
+
+> If $X, Y$ are independent real-valued variables, then $\E[XY] = \E[X]\,\E[Y]$; and for mutually
+> independent $X_1, \ldots, X_n$, $\E[X_1 \cdots X_n] = \E[X_1]\cdots\E[X_n]$.
+
+Using the value-by-value formula and factoring the joint probability,
+
+$$
+\E[XY] = \sum_{x,y} xy\,\P(X=x, Y=y) = \sum_{x,y} xy\,\P(X=x)\P(Y=y) = \left(\sum_x x\,\P(X=x)\right)\!\left(\sum_y y\,\P(Y=y)\right) = \E[X]\,\E[Y].
+$$
+
+Independence is essential. With $Y = X$ non-constant, $\E[XY] = \E[X^2]$ while $\E[X]\E[Y] = (\E[X])^2$,
+and the difference $\E[X^2] - (\E[X])^2$ is exactly the **variance** — the lead character of Day 5.
+Toggle the modes below to watch the gap open up.
+
+<ProductRule client:visible />
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+Terminology — "i.i.d." means independent and identically distributed.
+
+</Summary>
+<Detail>
+
+A sequence $X_1, \ldots, X_n$ is **independent and identically distributed** — almost always
+abbreviated **i.i.d.** — when the variables are mutually independent and share one distribution. The
+canonical example is "toss $n$ fair coins independently". Whenever we speak of "independent copies"
+of a variable in the days ahead, we mean i.i.d. copies.
+
+</Detail>
+</Beat>
+
+<Beat full>
+<Summary>
+
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
+
+1. Two fair dice are rolled independently, showing values $X$ and $Y$. Verify the factorisation $\P(X = 2,\, Y = 5) = \P(X = 2)\,\P(Y = 5)$.
+2. For the same two independent dice, use the product rule to compute $\E[XY]$.
+3. Let $X$ be the value of a single fair die, and set $Y = X$. Compute $\E[XY] = \E[X^2]$ and $\E[X]\,\E[Y] = (\E[X])^2$ separately, and observe that they differ — so the product rule can fail when the variables are not independent.
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>

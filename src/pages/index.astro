@@ -13,7 +13,12 @@ const allChapters = [
     title: "Foundations",
     blurb: "Sample spaces, events, and the uniform measure — plus a coin-flip betting game that almost nobody wins. Where chance becomes something you can compute.",
   },
-  // Days 2–5 and the bonus material will appear here as they're built.
+  {
+    slug: "day2",
+    title: "Random Variables, Expectation, and Linearity",
+    blurb: "Readouts of an experiment, their averages, and the one rule that runs the rest of the week: the expectation of a sum is the sum of the expectations — no matter how the parts interact.",
+  },
+  // Days 3–5 and the bonus material will appear here as they're built.
 ];
 
 const chapters = allChapters.filter((c) => isChapterVisible(c.slug));

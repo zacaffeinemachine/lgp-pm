@@ -1,0 +1,121 @@
+---
+layout: ../../layouts/Chapter.astro
+title: The Key Move — Computing Expectations
+order: 7
+chapter: day2
+chapterTitle: Day 2 — Random Variables, Expectation, and Linearity
+blurb: A three-step reflex for any "expected count" — decompose into indicators, find each probability, add them up. Two worked examples end to end.
+description: The indicator-and-linearity manoeuvre as a reusable recipe, illustrated by the coupon collector and same-suit neighbours in a shuffled deck.
+---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
+
+The last two pages add up to a single reliable recipe. It is worth stating as a reflex, because we
+will run it, with small variations, for the rest of the week.
+
+<Lecture>
+
+<Beat>
+<Summary>
+
+**The recipe** — write $X = \sum_i \one_{A_i}$, find each $\P(A_i)$, then $\E[X] = \sum_i \P(A_i)$.
+
+</Summary>
+<Detail>
+
+Whenever the task is to compute $\E[X]$ for a variable that *counts* something:
+
+1. Write $X$ as a sum of indicators $X = \sum_i \one_{A_i}$ for an explicit list of events $A_i$.
+2. Compute each $\P(A_i)$ separately.
+3. Apply linearity: $\E[X] = \sum_i \P(A_i)$.
+
+The events may overlap, depend on each other, or be wildly correlated — step 3 never asks.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+Worked example — the coupon collector: expected number of distinct types after $m$ days.
+
+</Summary>
+<Detail>
+
+There are $n$ coupon types; each day one arrives, uniform among the types and independent of the
+past. Let $X$ be the number of **distinct** types after $m$ days, and $A_i$ the event "type $i$ has
+appeared at least once". Then $X = \one_{A_1} + \cdots + \one_{A_n}$.
+
+Type $i$ is missed on a given day with probability $1 - \tfrac1n$, so $\P(A_i^c) = (1 - \tfrac1n)^m$
+and $\P(A_i) = 1 - (1 - \tfrac1n)^m$. By linearity,
+
+$$
+\E[X] = n\left(1 - \left(1 - \tfrac1n\right)^m\right).
+$$
+
+Sanity: $m = 0$ gives $0$, and as $m \to \infty$ the answer climbs to $n$. The events share one
+arrival stream and are far from independent — the recipe is unbothered.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+Worked example — a shuffled deck has $12$ same-suit adjacent pairs on average.
+
+</Summary>
+<Detail>
+
+Shuffle $52$ cards and let $X$ count the positions $i \in \set{1, \ldots, 51}$ where positions $i$
+and $i+1$ share a suit. With $A_i$ that event, $X = \one_{A_1} + \cdots + \one_{A_{51}}$.
+
+Fix the card in position $i$; of the $51$ remaining cards, exactly $12$ share its suit, and position
+$i+1$ is equally likely to be any of them. So $\P(A_i) = \tfrac{12}{51}$ for every $i$, and
+
+$$
+\E[X] = 51 \cdot \tfrac{12}{51} = 12.
+$$
+
+Consecutive events share a card and so are strongly correlated — yet the manoeuvre runs on the
+marginal probabilities alone.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+A teaser — this same move is the engine of the probabilistic method itself.
+
+</Summary>
+<Detail>
+
+The indicator-and-linearity move is more than a calculation aid. Tomorrow we turn it into a strategy
+for *proving things exist*: build an object at random, compute one expectation, and observe that no
+random quantity can sit strictly below its own average. The whole proof of our first existence
+result will be a single expectation calculation.
+
+</Detail>
+</Beat>
+
+<Beat full>
+<Summary>
+
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
+
+1. A fair die is rolled $12$ times. Find the expected number of rolls that show a six.
+2. In a group of $n$ people, each person's birthday is a uniformly random day of a $365$-day year, independently of the others. Find the expected number of people whose birthday falls on $1$ January.
+3. A standard deck of $52$ cards is shuffled uniformly at random. Find the expected number of aces among the top five cards.
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>

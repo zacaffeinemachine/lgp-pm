@@ -23,6 +23,7 @@
 
 export const VISIBLE_CHAPTERS: readonly string[] = [
   "day1",
+  // "day2",  // built and ready — uncomment to release Day 2 to students.
 ];
 
 export const VISIBLE_PAGES: readonly string[] = [
@@ -32,6 +33,14 @@ export const VISIBLE_PAGES: readonly string[] = [
   "day1/uniform-measure",
   "day1/independence",
   "day1/putting-it-together",
+  "day2/random-variables",
+  "day2/expectation",
+  "day2/indicators",
+  "day2/linearity",
+  "day2/distribution",
+  "day2/degree-sum",
+  "day2/key-move",
+  "day2/independence",
 ];
 
 export function isChapterVisible(slug: string): boolean {

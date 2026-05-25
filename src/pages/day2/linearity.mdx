@@ -1,0 +1,140 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Linearity of Expectation
+order: 4
+chapter: day2
+chapterTitle: Day 2 — Random Variables, Expectation, and Linearity
+blurb: The single most useful fact in the workshop — the expectation of a sum is the sum of the expectations, no matter how the parts interact.
+description: Linearity of expectation, the indicator-decomposition technique, and a deterministic counting problem solved through probability.
+---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
+import LinearitySim from "../../components/widgets/LinearitySim.tsx";
+
+The expectation operator is **linear**, in a strong sense no other operation in probability shares:
+it simply does not care whether the variables involved interact. This is the rule that powers
+almost every proof for the rest of the week.
+
+<Lecture>
+
+<Beat>
+<Summary>
+
+**Linearity** — $\E[aX + bY] = a\,\E[X] + b\,\E[Y]$, and more generally the expectation of any sum is the sum of the expectations.
+
+</Summary>
+<Detail>
+
+> For real-valued $X, Y$ on the same finite space and scalars $a, b$,
+> $$ \E[aX + bY] = a\,\E[X] + b\,\E[Y], $$
+> and for any $X_1, \ldots, X_n$ and scalars $a_1, \ldots, a_n$,
+> $$ \E[a_1 X_1 + \cdots + a_n X_n] = a_1\,\E[X_1] + \cdots + a_n\,\E[X_n]. $$
+
+The proof is one line of rearrangement:
+
+$$
+\E[aX + bY] = \sum_\omega (aX(\omega) + bY(\omega))\,\P(\omega) = a\sum_\omega X(\omega)\P(\omega) + b\sum_\omega Y(\omega)\P(\omega) = a\,\E[X] + b\,\E[Y].
+$$
+
+Crucially, nowhere did we assume anything about how $X$ and $Y$ relate.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+Warm-up — the expected sum of two dice is $7$, in two lines instead of eleven.
+
+</Summary>
+<Detail>
+
+Let $X_1, X_2$ be the two values. Each has expectation $3.5$, so by linearity
+
+$$
+\E[X_1 + X_2] = \E[X_1] + \E[X_2] = 3.5 + 3.5 = 7.
+$$
+
+Compare this to summing eleven terms $k \cdot \P(S = k)$ — same answer, far less labour. The hidden
+bookkeeping is exactly what linearity does for us in one stroke.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+A deterministic question, solved by probability — the sum of all three-digit numbers with digits in $\set{1, \ldots, 9}$.
+
+</Summary>
+<Detail>
+
+There are $9^3 = 729$ such numbers, and adding them by hand is unattractive. Instead, pick one of
+the $729$ **uniformly at random** and write its digits $D_1, D_2, D_3$, so the chosen number is
+
+$$
+N = 100\,D_1 + 10\,D_2 + D_3.
+$$
+
+Each $D_i$ is uniform on $\set{1, \ldots, 9}$ (the other two positions are free), so $\E[D_i] = \tfrac{1+\cdots+9}{9} = 5$. By linearity,
+
+$$
+\E[N] = 100\cdot5 + 10\cdot5 + 5 = 555.
+$$
+
+But $\E[N]$ is also the *average* of the list, $\tfrac{1}{729}\sum n$, so the sum we wanted is
+$729 \cdot 555 = 404{,}595$. The sum was never in the problem; we *put* it there, then let
+linearity digest it.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+**The indicator decomposition** — if $X$ counts how many of $A_1, \ldots, A_n$ occur, then $\E[X] = \sum_i \P(A_i)$.
+
+</Summary>
+<Detail>
+
+This is the workshop's main manoeuvre. Writing the count as a sum of indicators,
+
+$$
+X = \one_{A_1} + \cdots + \one_{A_n} \quad\Longrightarrow\quad \E[X] = \sum_{i=1}^n \E[\one_{A_i}] = \sum_{i=1}^n \P(A_i).
+$$
+
+To find the expected number of events that occur, we need only the individual probabilities — never
+how the events interact. Examples:
+
+- **Heads in $n$ tosses.** $\P(A_i) = \tfrac12$, so $\E[X] = \tfrac{n}{2}$.
+- **Fixed points of a random permutation.** $\P(A_i) = \tfrac1n$, so $\E[X] = n \cdot \tfrac1n = 1$ — for every $n$. The events are *not* independent, but linearity does not care.
+- **Adjacent friend-pairs at a round table.** If $m$ pairs are friends, each is adjacent with probability $\tfrac{2}{n-1}$, so the expected number adjacent is $\tfrac{2m}{n-1}$.
+
+The simulator below counts via indicators in three scenarios. Even for fixed points — where the
+events are correlated — the empirical mean tracks $\sum_i \P(A_i)$ exactly.
+
+<LinearitySim client:visible />
+
+</Detail>
+</Beat>
+
+<Beat full>
+<Summary>
+
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
+
+1. Three fair dice are rolled. Using linearity, find the expected value of their sum.
+2. A fair coin is tossed ten times. Writing the number of heads as a sum of indicators, find its expected value.
+3. Four fair dice are rolled. Find the expected number of dice that show a six. *(Hint: a sum of four indicators, one per die.)*
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>

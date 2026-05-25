@@ -1,0 +1,93 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Indicator Random Variables
+order: 3
+chapter: day2
+chapterTitle: Day 2 — Random Variables, Expectation, and Linearity
+blurb: The simplest random variable of all — a switch that reads 1 when an event happens and 0 when it doesn't. Its expectation is the event's probability.
+description: The indicator of an event, the identity E[1_A] = P(A), and why it becomes powerful only when combined with linearity.
+---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
+
+Among all random variables the simplest — and the one we will lean on most — is the **indicator**
+of an event. Its job is to turn a yes/no question ("did $A$ happen?") into a $0$-or-$1$ number, so
+the machinery of expectation can be aimed at it.
+
+<Lecture>
+
+<Beat>
+<Summary>
+
+**Definition** — the indicator $\one_A$ reads $1$ on $A$ and $0$ off it.
+
+</Summary>
+<Detail>
+
+> For an event $A \subseteq \Omega$, the **indicator** of $A$ is the random variable
+> $\one_A : \Omega \to \R$ given by
+> $$ \one_A(\omega) = \begin{cases} 1 & \omega \in A, \\ 0 & \omega \notin A. \end{cases} $$
+
+So $\one_A$ records whether $A$ occurred ($1$) or not ($0$) — nothing more.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+**Key identity** — $\E[\one_A] = \P(A)$. The expectation of an indicator *is* the probability of its event.
+
+</Summary>
+<Detail>
+
+> For any event $A$ in a finite probability space, $\E[\one_A] = \P(A)$.
+
+The variable takes the value $1$ on $A$ and $0$ on $A^c$, so the value-by-value formula reads
+
+$$
+\E[\one_A] = 1 \cdot \P(A) + 0 \cdot \P(A^c) = \P(A).
+$$
+
+This tiny fact is the engine of nearly every calculation this week.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+Two quick checks — heads of a fair coin, and an even die roll.
+
+</Summary>
+<Detail>
+
+- **Fair coin.** On $\Omega = \set{\texttt{H}, \texttt{T}}$ with $A = \set{\texttt{H}}$, we get $\E[\one_A] = 1\cdot\tfrac12 + 0\cdot\tfrac12 = \tfrac12 = \P(A)$.
+- **Even die.** On $\Omega = \set{1, \ldots, 6}$ with $A = \set{2, 4, 6}$, the indicator reads $1$ on three of six outcomes, so $\E[\one_A] = 3\cdot\tfrac16 = \tfrac12 = \P(A)$.
+
+The identity is trivial to verify on its own. Its real power shows only once we combine it with
+the next ingredient — linearity.
+
+</Detail>
+</Beat>
+
+<Beat full>
+<Summary>
+
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
+
+1. A fair die is rolled, and $A = \set{3, 6}$ is the event "the roll is a multiple of $3$". Write the value of $\one_A(\omega)$ for each outcome, compute $\E[\one_A]$ directly, and check it equals $\P(A)$.
+2. Let $A$ be an event. Show that $\one_{A^c}(\omega) = 1 - \one_A(\omega)$ for every outcome $\omega \in \Omega$.
+3. Let $A$ and $B$ be events. Show that $\one_{A \cap B}(\omega) = \one_A(\omega)\,\one_B(\omega)$ for every $\omega \in \Omega$.
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>

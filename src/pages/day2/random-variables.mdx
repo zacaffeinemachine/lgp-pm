@@ -1,0 +1,139 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Random Variables
+order: 1
+chapter: day2
+chapterTitle: Day 2 — Random Variables, Expectation, and Linearity
+blurb: From yes/no events to numerical readouts — how many heads, what sum, which vertex. The random variable packages a measurement into one object.
+description: Random variables as functions on a sample space, the events they generate, and worked examples from coins, dice, permutations, and graphs.
+---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
+import RandomVariableExplorer from "../../components/widgets/RandomVariableExplorer.tsx";
+
+Sample spaces and probability measures, on their own, only let us ask yes/no questions about
+an experiment. Most questions we care about ask for a **readout**: *how many* heads, *what*
+sum, *how large* the largest piece, *which* vertex. The random variable packages such a
+readout into a single object.
+
+<Lecture>
+
+<Beat>
+<Summary>
+
+**Definition** — a random variable $X$ is a function $X : \Omega \to T$ from the sample space to a target set $T$.
+
+</Summary>
+<Detail>
+
+> Let $(\Omega, \P)$ be a finite probability space and $T$ a set. A **random variable** with
+> **target set** $T$ is a function $X : \Omega \to T$. The value $X(\omega)$ is the readout the
+> experiment produces when the outcome is $\omega$.
+
+When $T = \R$ we call $X$ **real-valued**. This is by far the most common case — and the only
+one in which expectation will be defined — so "random variable" with no qualifier means
+real-valued.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+A random variable spawns a whole family of events: $\P(X = t)$, $\P(X \in S)$, and (when real-valued) $\P(X \leq k)$.
+
+</Summary>
+<Detail>
+
+Given a value $t \in T$, the set $\set{\omega \in \Omega : X(\omega) = t}$ is an event, and we
+abbreviate its probability as
+
+$$
+\P(X = t) \quad\text{for}\quad \P(\set{\omega : X(\omega) = t}),
+$$
+
+and likewise $\P(X \in S)$ for a subset $S \subseteq T$. When $X$ is real-valued the values are
+numbers we can order, so $\P(X \leq k)$ and $\P(X < k)$ make sense too. A random variable thus
+bundles up one event for every question we might ask about it.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+Example — number of heads in three tosses takes values $\set{0,1,2,3}$ with probabilities $\tfrac18, \tfrac38, \tfrac38, \tfrac18$.
+
+</Summary>
+<Detail>
+
+Take $\Omega = \set{\texttt{H}, \texttt{T}}^3$ uniform, and let $X(\omega)$ count the heads. One
+outcome maps to $0$, three to $1$, three to $2$, one to $3$, so
+
+$$
+\P(X = 0) = \tfrac18, \quad \P(X = 1) = \tfrac38, \quad \P(X = 2) = \tfrac38, \quad \P(X = 3) = \tfrac18.
+$$
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+More examples — the sum and the max of dice, a constant, and the identity readout.
+
+</Summary>
+<Detail>
+
+- **Sum of two dice.** $\Omega = \set{1, \ldots, 6}^2$, $S(a,b) = a + b$, taking values $2$ through $12$. Six of the $36$ pairs sum to $7$, so $\P(S = 7) = \tfrac16$.
+- **Maximum of three dice.** $M(a,b,c) = \max(a,b,c)$. The event $M \leq k$ asks every component to be at most $k$, so $\P(M \leq k) = (k/6)^3$.
+- **A constant.** $C(\omega) = 17$ for all $\omega$ is a (dull) random variable: $\P(C = 17) = 1$.
+- **The outcome itself.** If $\Omega = \set{1, \ldots, 6}$ is a die roll, $X(\omega) = \omega$ is the natural readout.
+
+Sample any of the three distributions below — the bars are simulated, the dashed ticks the exact probabilities.
+
+<RandomVariableExplorer client:visible />
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+Readouts need not be numbers — "a uniformly random vertex" is a random variable too, just not a real-valued one.
+
+</Summary>
+<Detail>
+
+Let $G = (V, E)$ be a finite graph, take $\Omega = V$ with $\P(\set{v}) = 1/\abs{V}$, and let
+$U(\omega) = \omega$. Then $U : \Omega \to V$ reads off a **uniformly random vertex** — its target
+set is a set of vertices, not numbers. "A uniformly random permutation of $\set{1, \ldots, n}$" is
+the same kind of object.
+
+We will use exactly the random-vertex construction in the degree-sum proof later today. For such
+non-numerical readouts we cannot meaningfully ask for an *average* — that requires numbers, which
+is why expectation, up next, is reserved for the real-valued case.
+
+</Detail>
+</Beat>
+
+<Beat full>
+<Summary>
+
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
+
+1. A fair coin is tossed twice, and $X$ records the number of heads. List the values $X$ can take, and for each value $k$ write down $\P(X = k)$.
+2. Two fair dice are rolled, recorded as an ordered pair, so $\Omega = \set{1, \ldots, 6}^2$. Let $M$ be the larger of the two values shown. Find $\P(M \leq 4)$ and $\P(M = 6)$.
+3. With $\Omega = \set{1, \ldots, 6}^2$ as above, let $S$ be the sum. Write the event $\set{S \geq 10}$ as an explicit subset of $\Omega$, and find $\P(S \geq 10)$.
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>
