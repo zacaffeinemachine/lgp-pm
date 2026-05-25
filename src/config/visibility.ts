@@ -46,7 +46,7 @@ export const VISIBLE_PAGES: readonly string[] = [
   "appendix/knight-moves",
   "appendix/swap-knights",
   "appendix/classical",
-  "appendix/hidden-graph",
+  "appendix/greater-challenge",
   "appendix/graphs-vertices-edges",
   "appendix/degree-and-handshake",
   "appendix/complete-paths-cycles",

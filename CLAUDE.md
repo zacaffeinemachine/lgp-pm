@@ -157,6 +157,7 @@ follow dark mode. **Keep this table current.**
 | `widgets/ProductRule.tsx`              | day2/independence                    |
 | `games/KnightPuzzle.tsx`               | appendix/knight-moves                |
 | `games/SwapKnightsPuzzle.tsx`          | appendix/swap-knights, appendix/classical |
+| `games/GreaterChallengePuzzle.tsx`     | appendix/greater-challenge           |
 
 (Day 2's `indicators`, `distribution`, and `key-move` pages are text-only by design.)
 
@@ -208,12 +209,13 @@ Prefer `npm run build` to catch errors before pushing (push = deploy).
 - **Appendix — A Primer on Graphs:** fully built and **released** —
   `"appendix"` is active in `VISIBLE_CHAPTERS`; all 12 pages are live. Three ported Guarini
   knight-puzzle pages (`knight-moves`, `swap-knights`, `classical`) + a bridge
-  page (`hidden-graph`) revealing the 3×3 knight graph is a cycle $C_8$, then
+  puzzle (`greater-challenge`, the ten-square tree-board variant ported from the
+  MathematicalThinking site, with a riddle-gated hidden-graph overlay), then
   eight lecture pages mirroring `Appendices/Graphs.tex` (`graphs-vertices-edges`,
   `degree-and-handshake`, `complete-paths-cycles`, `bipartite-graphs`,
   `subgraphs-and-complements`, `cliques-and-independent-sets`, `edge-colourings`,
   `glossary`). Figures are static SVG `components/graphs/*.astro`; the puzzle
-  boards reuse the ported `games/{KnightPuzzle,SwapKnightsPuzzle}.tsx`.
+  boards reuse the ported `games/{KnightPuzzle,SwapKnightsPuzzle,GreaterChallengePuzzle}.tsx`.
 - The downloadable `WorkshopNotes.pdf` is served from `public/notes/` and linked
   in every page header (`Base.astro`).
 

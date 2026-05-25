@@ -1,0 +1,28 @@
+---
+layout: ../../layouts/Chapter.astro
+title: A Greater Challenge
+order: 4
+chapter: appendix
+chapterTitle: Appendix — A Primer on Graphs
+blurb: A ten-square board, four knights, and a swap that is no longer impossible.
+description: The tree-shaped variant of Guarini's puzzle on a ten-square board — one last puzzle before we name the structure underneath.
+---
+import GreaterChallengePuzzle from "../../components/games/GreaterChallengePuzzle.tsx";
+
+Here is a knight-swap puzzle on a stranger board: ten squares,
+arranged in an irregular shape. Two red knights sit near the top; two
+blue knights sit near the bottom. The task is the same as before —
+swap the colours, one legal knight-jump at a time, with no two knights
+ever on the same square.
+
+<GreaterChallengePuzzle
+  client:visible
+  title="Swap the four knights"
+  hint="Red starts at squares 10 and 6. Blue starts at squares 1 and 3."
+/>
+
+Keep track of how many moves you need. Compare it with what the
+earlier puzzles required. Notice, too, which squares act as
+bottlenecks and which act as side-streets. Everything you observe here
+is fuel for the pages that follow, where we finally name the structure
+hiding underneath every one of these boards.
