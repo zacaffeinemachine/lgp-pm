@@ -1,0 +1,45 @@
+---
+// Same vertex set {a,b,c}, two ways. Left: a subgraph that drops edge bc.
+// Right: the induced subgraph G[{a,b,c}], which must keep bc.
+interface Props { caption?: string; }
+const { caption } = Astro.props;
+
+// triangle vertices around a centre
+function tri(cx: number): Record<string, [number, number]> {
+  return { a: [cx, 32], b: [cx - 45, 110], c: [cx + 45, 110] };
+}
+const L = tri(110);
+const R = tri(330);
+---
+<figure class="not-prose my-8 flex flex-col items-center">
+  <svg viewBox="0 0 440 175" width="440" class="max-w-full" role="img" aria-label="A subgraph compared with an induced subgraph">
+    <!-- left: edges ab, ac only (bc dropped) -->
+    <g stroke="var(--ink)" stroke-width="2" stroke-linecap="round" opacity="0.6">
+      <line x1={L.a[0]} y1={L.a[1]} x2={L.b[0]} y2={L.b[1]} />
+      <line x1={L.a[0]} y1={L.a[1]} x2={L.c[0]} y2={L.c[1]} />
+    </g>
+    <!-- right: edges ab, ac, bc -->
+    <g stroke="var(--ink)" stroke-width="2" stroke-linecap="round" opacity="0.6">
+      <line x1={R.a[0]} y1={R.a[1]} x2={R.b[0]} y2={R.b[1]} />
+      <line x1={R.a[0]} y1={R.a[1]} x2={R.c[0]} y2={R.c[1]} />
+      <line x1={R.b[0]} y1={R.b[1]} x2={R.c[0]} y2={R.c[1]} />
+    </g>
+    <g fill="var(--ink)">
+      {Object.values(L).map(([x, y]) => <circle cx={x} cy={y} r="6" />)}
+      {Object.values(R).map(([x, y]) => <circle cx={x} cy={y} r="6" />)}
+    </g>
+    <g fill="var(--muted)" font-size="14" font-family="serif" font-style="italic">
+      <text x={L.a[0]} y="22" text-anchor="middle">a</text>
+      <text x={L.b[0] - 10} y="115" text-anchor="end">b</text>
+      <text x={L.c[0] + 10} y="115" text-anchor="start">c</text>
+      <text x={R.a[0]} y="22" text-anchor="middle">a</text>
+      <text x={R.b[0] - 10} y="115" text-anchor="end">b</text>
+      <text x={R.c[0] + 10} y="115" text-anchor="start">c</text>
+    </g>
+    <g fill="var(--muted)" font-size="15" font-family="serif">
+      <text x="110" y="165" text-anchor="middle">a subgraph (bc dropped)</text>
+      <text x="330" y="165" text-anchor="middle">induced: G[{`{a,b,c}`}]</text>
+    </g>
+  </svg>
+  {caption && <figcaption class="text-sm text-[var(--muted)] mt-2 max-w-lg text-center">{caption}</figcaption>}
+</figure>

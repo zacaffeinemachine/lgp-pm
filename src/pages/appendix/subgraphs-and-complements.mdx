@@ -1,0 +1,94 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Subgraphs and Complements
+order: 9
+chapter: appendix
+chapterTitle: Appendix — A Primer on Graphs
+blurb: Two ways to build new graphs from old — keep part of one, or flip every edge to a non-edge.
+description: Subgraphs, induced subgraphs G[V'], spanning subgraphs, and the complement of a graph.
+---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
+import SubgraphInduced from "../../components/graphs/SubgraphInduced.astro";
+import Complement from "../../components/graphs/Complement.astro";
+
+Two simple operations let us build new graphs out of old ones, and both are
+workhorses in the arguments to come: taking *part* of a graph, and *flipping*
+which pairs are joined.
+
+<Lecture>
+
+<Beat>
+<Summary>
+
+A **subgraph** keeps some vertices and some of their edges; an **induced** subgraph $G[V']$ keeps *all* edges among the chosen vertices.
+
+</Summary>
+<Detail>
+
+> A graph $H = (V', E')$ is a **subgraph** of $G = (V, E)$, written
+> $H \subseteq G$, if $V' \subseteq V$ and $E' \subseteq E$ (with both endpoints
+> of every edge in $E'$ lying in $V'$).
+>
+> The subgraph is **induced** if $E'$ contains *every* edge of $G$ with both
+> endpoints in $V'$. We then write $H = G[V']$, the subgraph **induced** by $V'$.
+
+The difference is whether we are *free* to drop edges or *forced* to keep them.
+A plain subgraph on $\set{a,b,c}$ may leave out an edge that $G$ has; the induced
+subgraph $G[\set{a,b,c}]$ must include it.
+
+<SubgraphInduced caption="Both graphs use the vertices {a, b, c}. Left: a subgraph that omits edge bc. Right: the induced subgraph G[{a, b, c}], which is forced to keep bc because G has it." />
+
+A subgraph that keeps *all* the vertices, $V' = V$, but is free to drop edges, is
+called a **spanning** subgraph. The half-the-edges bipartite subgraph the
+workshop builds later is spanning in exactly this sense.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+The **complement** $\bar G$ joins exactly the pairs that $G$ leaves apart.
+
+</Summary>
+<Detail>
+
+> The **complement** of $G = (V, E)$ is the graph $\bar G = (V, \bar E)$ on the
+> same vertices, where $\set{u, v} \in \bar E$ precisely when $u \neq v$ and
+> $\set{u, v} \notin E$. In words: $u$ and $v$ are adjacent in $\bar G$ if and
+> only if they are *not* adjacent in $G$.
+
+Together, $G$ and $\bar G$ split the full edge set of $K_n$ between them: every
+pair of distinct vertices is an edge of exactly one of the two. So
+$\abs{E(G)} + \abs{E(\bar G)} = \binom{n}{2}$.
+
+<Complement caption="A graph G (its edges in black) and its complement (red). Here G is the 5-cycle and its complement is the 'pentagram' — together they fill in all ten edges of K₅." />
+
+Flipping to the complement is a quiet but powerful trick: it will let the
+workshop trade a statement about *dense* structure in $G$ for one about *sparse*
+structure in $\bar G$, and read one theorem off another.
+
+</Detail>
+</Beat>
+
+<Beat full>
+<Summary>
+
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
+
+1. List one subgraph of the triangle $K_3$ that is *not* induced, and one that *is*.
+2. If $G$ has $5$ vertices and $4$ edges, how many edges does $\bar G$ have?
+3. What is the complement of the complete graph $K_n$? Describe its edge set.
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>

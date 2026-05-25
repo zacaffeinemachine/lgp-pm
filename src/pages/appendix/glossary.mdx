@@ -1,0 +1,48 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Glossary at a Glance
+order: 12
+chapter: appendix
+chapterTitle: Appendix — A Primer on Graphs
+blurb: Every term the workshop needs, gathered on one page for quick reference.
+description: A one-page recap of the graph-theory vocabulary used in the workshop — graph, degree, handshake lemma, subgraph, complement, clique, independent set, bipartite, and the named families.
+---
+
+This is the entire vocabulary the workshop leans on, collected for quick
+reference. If a word appears in a lecture and gives you pause, it is here. A good
+way to lock it in: redraw each of the appendix's figures once from memory.
+
+- **Graph** $G = (V, E)$ — a finite vertex set $V$ and a set $E$ of unordered
+  pairs of distinct vertices (edges). Always *simple* and *undirected* here.
+- **Adjacent**, $u \sim v$ — $u$ and $v$ are joined by an edge; that edge is
+  **incident** to each of them.
+- **Order** and **size** — the counts $\abs{V} = n$ and $\abs{E} = m$.
+- **Degree** $\deg(v)$ — the number of edges at $v$; the **average degree** is
+  $\bar d = \tfrac1n \sum_v \deg(v)$.
+- **Handshake lemma** — $\sum_{v} \deg(v) = 2\abs{E}$ in every graph; hence the
+  number of odd-degree vertices is even.
+- **Complete graph** $K_n$ — all $\binom{n}{2}$ edges present; every vertex has
+  degree $n - 1$.
+- **Path** $P_n$ — a graph whose vertices list as $v_1, \ldots, v_n$ with edges
+  exactly the consecutive pairs.
+- **Cycle** $C_n$ — the same, plus the closing edge $v_n v_1$; every vertex has
+  degree $2$. Note $C_3 = K_3$.
+- **Bipartite graph** — vertices split as $V = A \sqcup B$ with every edge
+  crossing between the parts; equivalently, no odd cycle.
+- **Complete bipartite graph** $K_{m,n}$ — all $mn$ crossing edges; note
+  $K_{2,2} = C_4$.
+- **Subgraph** $H \subseteq G$ — a graph using some of $G$'s vertices and some of
+  its edges. **Induced** subgraph $G[V']$ — keeps *every* edge among the chosen
+  vertices $V'$. **Spanning** — a subgraph using *all* of $V$.
+- **Complement** $\bar G$ — same vertices, with $u, v$ adjacent in $\bar G$
+  exactly when they are *not* adjacent in $G$; so $\abs{E(G)} + \abs{E(\bar G)} = \binom{n}{2}$.
+- **Clique** — a set of mutually adjacent vertices; **clique number**
+  $\omega(G)$ is the largest one.
+- **Independent set** — a set with no edges inside; **independence number**
+  $\alpha(G)$ is the largest one. Duality: $\omega(G) = \alpha(\bar G)$.
+- **Edge colouring** $\chi : E \to C$ — any assignment of colours to edges. A set
+  $S$ is **monochromatic** if it is a clique whose edges all share one colour.
+
+That is the whole toolkit. Everything the workshop proves about graphs — the
+bipartite cut, the Ramsey lower bounds, Turán's theorem — is built from these
+words and the one identity that ties them together, the handshake lemma.

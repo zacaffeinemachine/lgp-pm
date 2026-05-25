@@ -1,0 +1,109 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Graphs, Vertices, and Edges
+order: 5
+chapter: appendix
+chapterTitle: Appendix — A Primer on Graphs
+blurb: The basic object — a set of dots and a set of dot-pairs — together with the words adjacent, incident, order, and size.
+description: The formal definition of a (simple, undirected) graph as a pair (V, E), with adjacency, incidence, order, size, and the workshop's notation.
+---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
+import SampleGraph from "../../components/graphs/SampleGraph.astro";
+
+The knight puzzle taught us the idea; now we name it. A graph records
+relationships among a fixed collection of objects: which pairs are tied together
+by some chosen relation, and which are not. Drawn on paper, the objects become
+dots and the ties become lines — but stripped of the picture, the underlying
+structure is just two sets.
+
+<Lecture>
+
+<Beat>
+<Summary>
+
+A **graph** is a pair $G = (V, E)$: a set $V$ of **vertices** and a set $E$ of **edges**, each edge a pair of vertices.
+
+</Summary>
+<Detail>
+
+> A **graph** $G$ is a pair $(V, E)$ where $V$ is a finite non-empty set of
+> **vertices**, and $E$ is a set of two-element subsets of $V$, called
+> **edges**. If $\set{u, v} \in E$ we say $u$ and $v$ are **adjacent** (or
+> **neighbours**), and the edge $\set{u, v}$ is **incident** to each of $u$ and $v$.
+
+The picture is a convenience, not part of the data: any two drawings of the same
+$(V, E)$ represent the same graph. Below is one drawing of a graph on five
+vertices.
+
+<SampleGraph caption="A graph with V = {a, b, c, d, e} and edges ab, ac, bc, bd, ce, de. Here a and b are adjacent; a and d are not. The edge ab is incident to both a and b." />
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+Our graphs are **simple** and **undirected** — no directions, no loops, no repeated edges.
+
+</Summary>
+<Detail>
+
+Three features of the definition deserve emphasis.
+
+- An edge is an *unordered* pair: $\set{u, v}$ is the same edge as $\set{v, u}$.
+  There is no preferred direction — all our graphs are **undirected**.
+- An edge is a subset of size *exactly two*. So $\set{u, u}$ is not allowed (no
+  **loops**), and no two distinct edges share the same pair of endpoints (no
+  **parallel edges**). Graphs obeying these restrictions are called **simple**;
+  in this workshop "graph" always means "simple graph".
+- $V$ and $E$ are abstract sets. Sliding the dots around the page, or bending
+  the lines, changes the drawing but not the graph — and not a single theorem we
+  prove about it.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+**Order** $\abs{V}$, **size** $\abs{E}$, and the shorthands $n, m, uv, u \sim v$.
+
+</Summary>
+<Detail>
+
+The number of vertices $\abs{V}$ is the **order** of $G$; the number of edges
+$\abs{E}$ is its **size**. When several graphs are in play we write $V(G)$ and
+$E(G)$. A few conventions we use throughout:
+
+- $n = \abs{V}$ and $m = \abs{E}$ when no confusion arises.
+- The edge $\set{u, v}$ is often abbreviated $uv$, with $uv$ and $vu$ naming the
+  same edge.
+- $u \sim v$ is shorthand for "$u$ and $v$ are adjacent", i.e. $\set{u, v} \in E$.
+
+None of this is deep — it is the vocabulary one picks up in a single sitting. We
+collect it here only so that nothing in the lectures comes as a surprise.
+
+</Detail>
+</Beat>
+
+<Beat full>
+<Summary>
+
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
+
+1. Write down $V$ and $E$ as explicit sets for the graph drawn above, and state the order and size.
+2. How many graphs are there on the fixed vertex set $\set{1, 2, 3}$? (Count the possible edge sets.)
+3. Explain why a simple graph on $n$ vertices has at most $\binom{n}{2}$ edges.
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>

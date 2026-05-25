@@ -1,0 +1,101 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Bipartite Graphs
+order: 8
+chapter: appendix
+chapterTitle: Appendix — A Primer on Graphs
+blurb: Graphs whose vertices split into two camps, with every edge crossing between them.
+description: Bipartite graphs and bipartitions, the complete bipartite graph K_{m,n}, the odd-cycle test, and the identity K_{2,2} = C_4.
+---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
+import Bipartite from "../../components/graphs/Bipartite.astro";
+
+Some graphs have a two-sided character: their vertices fall into two camps, and
+every edge runs between the camps rather than inside one. This shape is common
+enough — and useful enough in the workshop — to deserve its own name.
+
+<Lecture>
+
+<Beat>
+<Summary>
+
+A graph is **bipartite** if its vertices split as $V = A \sqcup B$ with every edge crossing from $A$ to $B$.
+
+</Summary>
+<Detail>
+
+> A graph $G = (V, E)$ is **bipartite** if there is a partition $V = A \sqcup B$
+> such that every edge has one endpoint in $A$ and the other in $B$. The pair
+> $(A, B)$ is a **bipartition** of $G$.
+
+No edge is allowed to live entirely inside $A$ or entirely inside $B$. Think of
+$A$ and $B$ as two guest lists where ties only ever cross the aisle.
+
+<Bipartite caption="Left: a bipartite graph with parts A and B — every edge crosses between them. Right: the complete bipartite graph K₃,₃, which has all 3 × 3 = 9 crossing edges." />
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+The **complete bipartite** graph $K_{m,n}$ has all $mn$ crossing edges.
+
+</Summary>
+<Detail>
+
+> For positive integers $m, n$, the **complete bipartite graph** $K_{m,n}$ has
+> vertex set $A \sqcup B$ with $\abs{A} = m$ and $\abs{B} = n$, and its edges are
+> *all* $mn$ pairs $\set{a, b}$ with $a \in A$ and $b \in B$.
+
+So $K_{m,n}$ is the densest bipartite graph on those two parts: nothing inside a
+part, everything across. A small but useful identity — $K_{2,2}$ is the same
+graph as the four-cycle $C_4$. (Draw two dots opposite two dots, join all four
+crossing pairs, and the square loop appears.)
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+The test: a graph is bipartite **exactly when it has no odd cycle**.
+
+</Summary>
+<Detail>
+
+Why can some graphs *not* be split this way? Trace a cycle while trying to
+two-colour the vertices $A$/$B$ so neighbours differ: the colours must alternate
+$A, B, A, B, \ldots$ around it. That only closes up consistently if the cycle
+has *even* length. An odd cycle — a triangle, a pentagon — forces a clash.
+
+This gives a clean criterion: **a graph is bipartite if and only if it contains
+no odd cycle.** In particular $K_n$ is bipartite only for $n \leq 2$; from
+$n = 3$ on it contains the triangle $C_3$ and cannot be split. Bipartite graphs
+return later when the workshop shows that any graph has a bipartite subgraph
+carrying at least half of its edges.
+
+</Detail>
+</Beat>
+
+<Beat full>
+<Summary>
+
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
+
+1. How many edges does $K_{3,4}$ have? Give a bipartition of it.
+2. Is the cycle $C_6$ bipartite? Is $C_5$? Justify each with the odd-cycle test.
+3. The knight graph's eight outer squares formed the cycle $C_8$. Is it bipartite? If so, exhibit the two camps.
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>

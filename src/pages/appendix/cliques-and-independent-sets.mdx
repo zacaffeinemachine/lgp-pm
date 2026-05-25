@@ -1,0 +1,102 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Cliques and Independent Sets
+order: 10
+chapter: appendix
+chapterTitle: Appendix — A Primer on Graphs
+blurb: The two opposite extremes — a set all joined up, and a set with no edges at all — and their mirror-image relationship.
+description: Cliques and independent sets, the clique number ω(G) and independence number α(G), and the complement duality ω(G) = α(complement of G).
+---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
+import CliqueIndependent from "../../components/graphs/CliqueIndependent.astro";
+
+Among all the subsets of vertices, two kinds sit at opposite extremes: those
+where *everyone* is joined, and those where *no one* is. Both are central to the
+extremal results the workshop proves.
+
+<Lecture>
+
+<Beat>
+<Summary>
+
+A **clique** is a set of mutually adjacent vertices; an **independent set** has no edges inside it at all.
+
+</Summary>
+<Detail>
+
+> A subset $S \subseteq V$ is a **clique** if every two distinct vertices of $S$
+> are adjacent — that is, $G[S]$ is a complete graph $K_{\abs{S}}$.
+>
+> A subset $I \subseteq V$ is an **independent set** if no two vertices of $I$
+> are adjacent — that is, $G[I]$ has no edges.
+
+A clique is a fully-connected clump; an independent set is a scattering of
+mutual strangers. They are perfect opposites, and the same vertices can play
+very different roles depending on the graph.
+
+<CliqueIndependent caption="The same graph, twice. Left: the vertices {1, 2, 3} form a clique — all three edges present. Right: {2, 4} is an independent set — no edge joins them." />
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+The largest sizes get names: the **clique number** $\omega(G)$ and the **independence number** $\alpha(G)$.
+
+</Summary>
+<Detail>
+
+> The **clique number** $\omega(G)$ is the size of the largest clique in $G$;
+> the **independence number** $\alpha(G)$ is the size of the largest independent
+> set in $G$.
+
+For the graph above, the triangle gives $\omega(G) = 3$, and no two non-adjacent
+vertices extend to a non-adjacent triple, so $\alpha(G) = 2$. These two numbers
+measure, respectively, the densest and the emptiest patch a graph contains.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+They are mirror images through the complement: $\omega(G) = \alpha(\bar G)$ and $\alpha(G) = \omega(\bar G)$.
+
+</Summary>
+<Detail>
+
+Here is where the complement from the previous page pays off. A set $S$ is a
+*clique* of $G$ exactly when every pair inside it is an edge of $G$ — which is
+exactly when *no* pair inside it is an edge of $\bar G$, i.e. $S$ is an
+*independent set* of $\bar G$. The roles swap perfectly:
+$$ \omega(G) = \alpha(\bar G), \qquad \alpha(G) = \omega(\bar G). $$
+
+This duality is the hinge of the workshop's argument for Turán's theorem: a
+guaranteed *large independent set* in one graph becomes a statement about
+*avoiding large cliques* in its complement. One picture, read from both sides.
+
+</Detail>
+</Beat>
+
+<Beat full>
+<Summary>
+
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
+
+1. What are $\omega(K_n)$ and $\alpha(K_n)$ for the complete graph?
+2. What are $\omega(C_5)$ and $\alpha(C_5)$ for the five-cycle?
+3. Using $\omega(G) = \alpha(\bar G)$, find $\alpha(G)$ when $\bar G$ is the complete graph $K_5$.
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>

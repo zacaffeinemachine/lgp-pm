@@ -1,0 +1,66 @@
+---
+// The hinge figure: the numbered 3x3 board (left) and the graph of knight
+// moves on it (right). The eight border squares form a single 8-cycle
+// 1–6–7–2–9–4–3–8–1; the centre square 5 is isolated.
+interface Props { caption?: string; }
+const { caption } = Astro.props;
+
+// Board: 3x3 grid of 46px cells, numbered 1..9 (row-major).
+const cell = 46;
+const x0 = 12, y0 = 20;
+const squares = [];
+for (let r = 0; r < 3; r++)
+  for (let c = 0; c < 3; c++)
+    squares.push({
+      x: x0 + c * cell,
+      y: y0 + r * cell,
+      n: r * 3 + c + 1,
+      light: (r + c) % 2 === 0,
+    });
+
+// Cycle drawing: 8 border vertices on a circle, in cycle order, centre = 5.
+const order = [1, 6, 7, 2, 9, 4, 3, 8];
+const cx = 320, cy = 88, r = 66;
+const pos: Record<number, [number, number]> = {};
+order.forEach((n, i) => {
+  const a = (90 - i * 45) * Math.PI / 180; // start at top, go clockwise
+  pos[n] = [+(cx + r * Math.cos(a)).toFixed(1), +(cy - r * Math.sin(a)).toFixed(1)];
+});
+pos[5] = [cx, cy];
+---
+<figure class="not-prose my-8 flex flex-col items-center">
+  <svg viewBox="0 0 420 200" width="420" class="max-w-full" role="img" aria-label="The 3x3 board and its knight-move graph, an 8-cycle">
+    <!-- board -->
+    {squares.map((s) => (
+      <>
+        <rect x={s.x} y={s.y} width={cell} height={cell}
+          fill={s.light ? "var(--sq-light)" : "var(--sq-dark)"} />
+        <text x={s.x + 7} y={s.y + 17} font-size="13" font-family="serif"
+          fill="var(--piece)" opacity="0.85">{s.n}</text>
+      </>
+    ))}
+    <rect x={x0} y={y0} width={cell * 3} height={cell * 3}
+      fill="none" stroke="var(--rule)" stroke-width="1.5" />
+
+    <!-- knight-move cycle -->
+    <g stroke="var(--ink)" stroke-width="2" stroke-linecap="round" opacity="0.6">
+      {order.map((n, i) => {
+        const p = pos[n], q = pos[order[(i + 1) % order.length]];
+        return <line x1={p[0]} y1={p[1]} x2={q[0]} y2={q[1]} />;
+      })}
+    </g>
+    <g>
+      {order.map((n) => <circle cx={pos[n][0]} cy={pos[n][1]} r="11" fill="var(--surface)" stroke="var(--ink)" stroke-width="2" />)}
+      <circle cx={pos[5][0]} cy={pos[5][1]} r="11" fill="var(--surface)" stroke="var(--muted)" stroke-width="2" stroke-dasharray="3 3" />
+    </g>
+    <g fill="var(--ink)" font-size="12" font-family="serif" text-anchor="middle">
+      {order.map((n) => <text x={pos[n][0]} y={pos[n][1] + 4}>{n}</text>)}
+      <text x={pos[5][0]} y={pos[5][1] + 4} fill="var(--muted)">5</text>
+    </g>
+    <g fill="var(--muted)" font-size="14" font-family="serif">
+      <text x="81" y="192" text-anchor="middle">the board</text>
+      <text x="320" y="192" text-anchor="middle">knight moves: a cycle C₈</text>
+    </g>
+  </svg>
+  {caption && <figcaption class="text-sm text-[var(--muted)] mt-2 max-w-lg text-center">{caption}</figcaption>}
+</figure>

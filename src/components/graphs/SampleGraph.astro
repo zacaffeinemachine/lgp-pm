@@ -1,0 +1,40 @@
+---
+// The running 5-vertex example. `labels="names"` shows a..e; `labels="degrees"`
+// shows each vertex's degree (2,3,3,2,2). Edges: ab, ac, bc, bd, ce, de.
+interface Props {
+  labels?: "names" | "degrees";
+  caption?: string;
+}
+const { labels = "names", caption } = Astro.props;
+const txt =
+  labels === "degrees"
+    ? { a: "2", b: "3", c: "3", d: "2", e: "2" }
+    : { a: "a", b: "b", c: "c", d: "d", e: "e" };
+---
+<figure class="not-prose my-8 flex flex-col items-center">
+  <svg viewBox="0 0 240 200" width="260" class="max-w-full" role="img" aria-label="Sample graph on five vertices">
+    <g stroke="var(--ink)" stroke-width="2" stroke-linecap="round" opacity="0.6">
+      <line x1="120" y1="43" x2="48.5" y2="98" />
+      <line x1="120" y1="43" x2="191.5" y2="98" />
+      <line x1="48.5" y1="98" x2="191.5" y2="98" />
+      <line x1="48.5" y1="98" x2="76" y2="169.5" />
+      <line x1="191.5" y1="98" x2="164" y2="169.5" />
+      <line x1="76" y1="169.5" x2="164" y2="169.5" />
+    </g>
+    <g fill="var(--ink)">
+      <circle cx="120" cy="43" r="6" />
+      <circle cx="48.5" cy="98" r="6" />
+      <circle cx="191.5" cy="98" r="6" />
+      <circle cx="76" cy="169.5" r="6" />
+      <circle cx="164" cy="169.5" r="6" />
+    </g>
+    <g fill="var(--muted)" font-size="15" font-style={labels === "degrees" ? "normal" : "italic"} font-family="serif">
+      <text x="120" y="30" text-anchor="middle">{txt.a}</text>
+      <text x="36" y="103" text-anchor="end">{txt.b}</text>
+      <text x="204" y="103" text-anchor="start">{txt.c}</text>
+      <text x="66" y="187" text-anchor="end">{txt.d}</text>
+      <text x="174" y="187" text-anchor="start">{txt.e}</text>
+    </g>
+  </svg>
+  {caption && <figcaption class="text-sm text-[var(--muted)] mt-2 max-w-md text-center">{caption}</figcaption>}
+</figure>

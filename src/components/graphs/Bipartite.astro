@@ -1,0 +1,43 @@
+---
+// Left: a generic bipartite graph (parts A, B). Right: the complete bipartite K_{3,3}.
+interface Props { caption?: string; }
+const { caption } = Astro.props;
+
+const A = [40, 150]; // x of part-A and part-B columns (left figure)
+const ys = [45, 105, 165];
+// generic edges as [aIndex, bIndex]
+const genEdges = [ [0,0], [0,1], [1,1], [2,1], [2,2] ];
+
+const A2 = [290, 400]; // K_{3,3} columns
+---
+<figure class="not-prose my-8 flex flex-col items-center">
+  <svg viewBox="0 0 440 210" width="440" class="max-w-full" role="img" aria-label="A bipartite graph and the complete bipartite graph K3,3">
+    <!-- generic bipartite -->
+    <g stroke="var(--ink)" stroke-width="2" stroke-linecap="round" opacity="0.55">
+      {genEdges.map(([a, b]) => (
+        <line x1={A[0]} y1={ys[a]} x2={A[1]} y2={ys[b]} />
+      ))}
+    </g>
+    <g fill="var(--ink)">
+      {ys.map((y) => <circle cx={A[0]} cy={y} r="6" />)}
+      {ys.map((y) => <circle cx={A[1]} cy={y} r="6" />)}
+    </g>
+    <!-- K_{3,3}: all 9 edges -->
+    <g stroke="var(--ink)" stroke-width="1.7" stroke-linecap="round" opacity="0.5">
+      {ys.map((ya) => ys.map((yb) => <line x1={A2[0]} y1={ya} x2={A2[1]} y2={yb} />))}
+    </g>
+    <g fill="var(--ink)">
+      {ys.map((y) => <circle cx={A2[0]} cy={y} r="6" />)}
+      {ys.map((y) => <circle cx={A2[1]} cy={y} r="6" />)}
+    </g>
+    <g fill="var(--muted)" font-size="14" font-family="serif" font-style="italic">
+      <text x={A[0]} y="25" text-anchor="middle">A</text>
+      <text x={A[1]} y="25" text-anchor="middle">B</text>
+    </g>
+    <g fill="var(--muted)" font-size="16" font-family="serif">
+      <text x="95" y="200" text-anchor="middle">a bipartite graph</text>
+      <text x="345" y="200" text-anchor="middle">K₃,₃</text>
+    </g>
+  </svg>
+  {caption && <figcaption class="text-sm text-[var(--muted)] mt-2 max-w-lg text-center">{caption}</figcaption>}
+</figure>

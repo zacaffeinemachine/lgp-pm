@@ -1,0 +1,73 @@
+---
+layout: ../../layouts/Chapter.astro
+title: The Hidden Graph
+order: 4
+chapter: appendix
+chapterTitle: Appendix — A Primer on Graphs
+blurb: Strip away the board and the knight puzzle becomes a loop of eight squares. Meet the object that runs the rest of the appendix.
+description: The 3×3 knight-move puzzle, redrawn as a graph — an 8-cycle plus one isolated centre — revealing why the swap is possible.
+---
+import KnightGraph from "../../components/graphs/KnightGraph.astro";
+
+The knight puzzles felt strangely rigid. Four knights, nine squares, and yet
+most arrangements seemed unreachable no matter how long we tried. That rigidity
+is not an accident of the board — it is the *shape of the connections*, and we
+can see it cleanly once we throw the board away.
+
+## Forget the squares; keep the moves
+
+Here is the only thing a knight cares about: from each square, which squares can
+it reach in one jump? Nothing else about the board matters — not distances, not
+which square looks like a corner, only this pattern of "can-jump-to".
+
+So let us record exactly that. Draw a **dot** for each of the nine squares.
+Whenever a knight can jump between two squares, join their dots with a **line**.
+The dots and lines below carry every legal move, and nothing else.
+
+<KnightGraph
+  caption="Left: the 3×3 board with its squares numbered 1–9. Right: a dot for each square, joined when a knight can hop between them. The eight outer squares string together into a single loop; the centre square 5 connects to nothing."
+/>
+
+Two facts jump out of the picture on the right.
+
+First, the centre square **5 is isolated** — no line touches it. A knight
+standing on the centre of a 3×3 board has nowhere to go, and no knight can ever
+land there. That is why the centre seemed to "block" everything: it is not a
+crossroads at all, but a dead end that play simply never visits.
+
+Second, the eight outer squares are not a tangle. Follow the lines and they form
+**one single loop**:
+$$ 1 - 6 - 7 - 2 - 9 - 4 - 3 - 8 - 1. $$
+Every outer square has exactly two neighbours, and the loop closes up after
+visiting all eight. The knight's frantic L-shaped hops, seen through this
+picture, are nothing more than steps around a circle.
+
+## Why the swap works
+
+Redraw that loop as an honest circle, with the four knights sitting on four of
+its eight positions. A knight's move is now just a slide to an adjacent empty
+spot along the circle — and here is the catch that the messy board hid from us:
+**sliding pieces around a single loop can never change the order in which they
+appear around it.** Pieces can travel and shuffle into the gaps, but a red that
+starts clockwise-before a blue stays clockwise-before it, forever.
+
+In the swap puzzle the two reds and two blues sit *alternately* around the loop,
+evenly spaced. Swapping every red with every blue is therefore the same as
+rotating the whole necklace by one notch — and a rotation is exactly the kind of
+motion sliding *can* achieve. That is the real reason the colours can be
+exchanged. The arrangements you found impossible were the ones that would have
+required cutting the loop; the ones that worked were rotations of it in disguise.
+
+## The object we will study
+
+The dots-and-lines picture is the hero of this story, and it has a name: a
+**graph**. The squares became its *vertices*, the legal moves became its
+*edges*, and a question about a chessboard turned into a question about a loop —
+a structure we named a *cycle* a moment ago without fanfare.
+
+This is the move we will make again and again in the workshop: replace a
+concrete object by the bare graph of how its parts connect, and let the shape of
+that graph do the work. The remaining pages of this appendix pin down the
+vocabulary precisely — vertices and edges, degrees, paths and cycles, and a few
+more — so that when these words appear in the lectures, they come with no
+surprises.

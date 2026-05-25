@@ -1,0 +1,39 @@
+---
+// K_3, K_4, K_5 drawn side by side, vertices on a regular polygon, all edges present.
+interface Props { caption?: string; }
+const { caption } = Astro.props;
+
+// Vertex coordinates for each, computed from regular-polygon angles.
+const k3 = [ [75,29], [35.2,98], [114.8,98] ];
+const k4 = [ [252.5,42.5], [187.5,42.5], [187.5,107.5], [252.5,107.5] ];
+const k5 = [ [375,29], [331.3,60.8], [348,112.2], [402,112.2], [418.7,60.8] ];
+
+function edges(pts: number[][]) {
+  const out: number[][] = [];
+  for (let i = 0; i < pts.length; i++)
+    for (let j = i + 1; j < pts.length; j++)
+      out.push([pts[i][0], pts[i][1], pts[j][0], pts[j][1]]);
+  return out;
+}
+const groups = [k3, k4, k5];
+---
+<figure class="not-prose my-8 flex flex-col items-center">
+  <svg viewBox="0 0 460 165" width="460" class="max-w-full" role="img" aria-label="The complete graphs K3, K4 and K5">
+    {groups.map((pts) => (
+      <>
+        <g stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" opacity="0.55">
+          {edges(pts).map(([x1, y1, x2, y2]) => <line x1={x1} y1={y1} x2={x2} y2={y2} />)}
+        </g>
+        <g fill="var(--ink)">
+          {pts.map(([x, y]) => <circle cx={x} cy={y} r="5.5" />)}
+        </g>
+      </>
+    ))}
+    <g fill="var(--muted)" font-size="16" font-family="serif">
+      <text x="75" y="152" text-anchor="middle">K₃</text>
+      <text x="220" y="152" text-anchor="middle">K₄</text>
+      <text x="375" y="152" text-anchor="middle">K₅</text>
+    </g>
+  </svg>
+  {caption && <figcaption class="text-sm text-[var(--muted)] mt-2 max-w-lg text-center">{caption}</figcaption>}
+</figure>

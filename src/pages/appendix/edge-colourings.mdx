@@ -1,0 +1,99 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Edge Colourings
+order: 11
+chapter: appendix
+chapterTitle: Appendix — A Primer on Graphs
+blurb: Paint the edges with a palette of colours, and ask when a whole clique comes out a single colour.
+description: Edge colourings as functions from the edge set to a colour set, monochromatic sets, and the Ramsey framing used in the workshop.
+---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
+import EdgeColouring from "../../components/graphs/EdgeColouring.astro";
+
+The last piece of vocabulary is what turns graphs into a playground for the
+probabilistic method: we paint the edges, then ask what a *random* painting is
+forced to contain.
+
+<Lecture>
+
+<Beat>
+<Summary>
+
+An **edge colouring** is just a function $\chi : E \to C$ assigning each edge one of a palette of colours.
+
+</Summary>
+<Detail>
+
+> Let $G = (V, E)$ and let $C$ be a finite set of **colours**. An **edge
+> colouring** of $G$ with palette $C$ is any function $\chi : E \to C$.
+
+There is no rule here — adjacent edges *may* share a colour. (That freedom is
+what distinguishes this from the "proper" colourings of other courses, which we
+do not need.) A colouring is simply a choice of one colour for each edge, and
+with $\abs{C}$ colours there are $\abs{C}^{\abs{E}}$ of them to choose from.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+A set of vertices is **monochromatic** if it is a clique whose every edge got the same colour.
+
+</Summary>
+<Detail>
+
+> A subset $S \subseteq V$ is **monochromatic** under $\chi$ if every two
+> distinct vertices of $S$ are adjacent *and* all $\binom{\abs{S}}{2}$ edges of
+> $G[S]$ receive the same colour.
+
+So a monochromatic set is a clique painted in a single colour. Below, the edges
+of $K_4$ are split into red and blue: the triangle on $\set{1,2,4}$ is
+all-red — monochromatic — while the triangle on $\set{1,2,3}$ mixes colours and
+is not.
+
+<EdgeColouring caption="A 2-colouring of K₄. The triangle {1, 2, 4} is monochromatic (all red); the triangle {1, 2, 3} is not." />
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+This is the Ramsey setting: colour at random, and count the cliques that come out monochromatic.
+
+</Summary>
+<Detail>
+
+The workshop's Ramsey arguments live exactly here. Take the complete graph
+$K_n$, colour each of its $\binom{n}{2}$ edges by an independent coin flip, and
+ask: how many $k$-vertex cliques happen to come out monochromatic? Each fixed
+clique is monochromatic only if its $\binom{k}{2}$ edges all match — a rare
+event — and counting the *expected* number of such cliques is what lets us prove
+a colouring with **no** monochromatic $K_k$ must exist. The randomness sits on
+the colouring $\chi$; the graph $K_n$ underneath stays fixed.
+
+</Detail>
+</Beat>
+
+<Beat full>
+<Summary>
+
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
+
+1. How many $2$-colourings does $K_4$ have? (It has six edges.)
+2. In the coloured $K_4$ above, list every monochromatic set of size $3$. Are there any of size $4$?
+3. With $2$ colours, what is the probability that one fixed triangle in $K_n$ comes out monochromatic under a random edge colouring?
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>

@@ -1,0 +1,115 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Complete Graphs, Paths, and Cycles
+order: 7
+chapter: appendix
+chapterTitle: Appendix — A Primer on Graphs
+blurb: Three named families that recur all week — the all-edges graph K_n, the chain P_n, and the loop C_n.
+description: The complete graph K_n, and the structural definitions of the path P_n and cycle C_n as graphs whose vertices can be listed so the edges are exactly the consecutive pairs.
+---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
+import CompleteGraphs from "../../components/graphs/CompleteGraphs.astro";
+import PathCycle from "../../components/graphs/PathCycle.astro";
+
+A few families of graphs turn up so often that they earn standing names. We meet
+three of them here: the graph with *every* edge, the simple *chain*, and the
+*loop* we already stumbled onto in the knight puzzle.
+
+<Lecture>
+
+<Beat>
+<Summary>
+
+The **complete graph** $K_n$ has all $\binom{n}{2}$ possible edges; every vertex has degree $n - 1$.
+
+</Summary>
+<Detail>
+
+> For an integer $n \geq 1$, the **complete graph** $K_n$ has $n$ vertices, and
+> its edge set is *all* $\binom{n}{2}$ two-element subsets of $V$.
+
+Every vertex is adjacent to every other, so each has degree $n - 1$; the
+handshake lemma then confirms $\abs{E(K_n)} = \tfrac{n(n-1)}{2} = \binom{n}{2}$.
+
+<CompleteGraphs caption="The first complete graphs. K₃ is the triangle; K₄ adds both diagonals of a square; K₅ has ten edges." />
+
+When the workshop two-colours the edges of $K_n$ in a Ramsey argument, it is
+these $\binom{n}{2}$ edges being coloured — the graph itself never changes.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+A **path** $P_n$ and a **cycle** $C_n$: graphs whose vertices *can be listed* so the edges are exactly the consecutive pairs.
+
+</Summary>
+<Detail>
+
+> Let $n \geq 1$. A graph $G = (V, E)$ is a **path** $P_n$ if $\abs{V} = n$ and
+> one can list its vertices in a sequence $v_1, v_2, \ldots, v_n$ (each vertex
+> appearing exactly once) so that the edges are precisely the consecutive pairs,
+> and nothing else:
+> $$ E = \set{v_i v_{i+1} : 1 \leq i \leq n - 1}. $$
+>
+> Let $n \geq 3$. A graph $G = (V, E)$ is a **cycle** $C_n$ if $\abs{V} = n$ and
+> one can list its vertices as $v_1, \ldots, v_n$ (each once) so the edges are
+> the consecutive pairs together with the one pair $v_n v_1$ closing the loop,
+> and nothing else:
+> $$ E = \set{v_i v_{i+1} : 1 \leq i \leq n - 1} \cup \set{v_n v_1}. $$
+
+The phrase "one can list its vertices" is the heart of these definitions. The
+labels $v_1, \ldots, v_n$ are not part of the graph — they are a bookkeeping
+device we are free to choose. To say a graph *is* a path asserts that *some* such
+listing exists; it is a structural property, not a feature of how the vertices
+happen to be named. (Reading the sequence backwards gives another valid listing
+of the same path.) The clause "and nothing else" forbids stray edges, so a path
+has exactly its $n - 1$ chain-edges and a cycle exactly its $n$ loop-edges.
+
+<PathCycle caption="The path P₅ and the cycle C₅." />
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+Degrees tell them apart: a path has two endpoints of degree $1$; a cycle is degree-$2$ everywhere.
+
+</Summary>
+<Detail>
+
+In a path the two ends $v_1$ and $v_n$ have degree $1$ and the $n - 2$ interior
+vertices have degree $2$. In a cycle *every* vertex has degree exactly $2$ — the
+loop has no ends. The smallest cycle is the triangle $C_3$, which is the same
+graph as $K_3$.
+
+These two families are exactly what later questions about "triangle-free" or
+"$4$-cycle-free" graphs are asking about: whether a graph contains a copy of
+$C_3$, or of $C_4$, sitting inside it.
+
+</Detail>
+</Beat>
+
+<Beat full>
+<Summary>
+
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
+
+1. How many edges does $K_6$ have? And $K_{10}$?
+2. Using the structural definition, argue that $C_4$ and $K_4$ are *not* the same graph, even though both have four vertices. (Compare their numbers of edges.)
+3. The eight outer squares of the knight graph formed a single loop. Which $C_n$ was it, and what is the degree of every vertex in it?
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>

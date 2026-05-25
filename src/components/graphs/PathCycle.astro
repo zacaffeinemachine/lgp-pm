@@ -1,0 +1,31 @@
+---
+// The path P_5 (a chain) beside the cycle C_5 (a pentagon).
+interface Props { caption?: string; }
+const { caption } = Astro.props;
+
+const path = [ [35,65], [78,65], [121,65], [164,65], [207,65] ];
+// C_5 on a circle centred at (340,68), r = 42.
+const cyc = [ [340,26], [300.1,55], [315.3,102], [364.7,102], [379.9,55] ];
+---
+<figure class="not-prose my-8 flex flex-col items-center">
+  <svg viewBox="0 0 440 150" width="440" class="max-w-full" role="img" aria-label="The path P5 and the cycle C5">
+    <g stroke="var(--ink)" stroke-width="2" stroke-linecap="round" opacity="0.6">
+      {path.slice(0, -1).map((p, i) => (
+        <line x1={p[0]} y1={p[1]} x2={path[i + 1][0]} y2={path[i + 1][1]} />
+      ))}
+      {cyc.map((p, i) => {
+        const q = cyc[(i + 1) % cyc.length];
+        return <line x1={p[0]} y1={p[1]} x2={q[0]} y2={q[1]} />;
+      })}
+    </g>
+    <g fill="var(--ink)">
+      {path.map((p) => <circle cx={p[0]} cy={p[1]} r="6" />)}
+      {cyc.map((p) => <circle cx={p[0]} cy={p[1]} r="6" />)}
+    </g>
+    <g fill="var(--muted)" font-size="16" font-family="serif">
+      <text x="121" y="115" text-anchor="middle">P₅</text>
+      <text x="340" y="135" text-anchor="middle">C₅</text>
+    </g>
+  </svg>
+  {caption && <figcaption class="text-sm text-[var(--muted)] mt-2 max-w-lg text-center">{caption}</figcaption>}
+</figure>

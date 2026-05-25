@@ -1,0 +1,33 @@
+---
+layout: ../../layouts/Chapter.astro
+title: The Classical Puzzle
+order: 3
+chapter: appendix
+chapterTitle: Appendix — A Primer on Graphs
+blurb: Four knights on a 3×3 board, as Guarini posed them in 1512.
+description: The 1512 Guarini puzzle — same board, a different goal.
+---
+import SwapKnightsPuzzle from "../../components/games/SwapKnightsPuzzle.tsx";
+
+At last, here is the puzzle the Italian mathematician Paolo Guarini di Forlì set
+down in 1512 — the one that started this whole line of thought.
+
+The board is the same 3×3 grid, but the starting position is different: two
+**red** knights sit across the top row, and two **blue** knights across the
+bottom. The goal is different too. Guarini did not want the colours merely
+interchanged row-for-row. He asked for the knights to be rearranged into a
+particular pattern: the two blue knights on one diagonal of the board, and the
+two red knights on the other.
+
+<SwapKnightsPuzzle
+  client:visible
+  variant="classical"
+  title="The 1512 puzzle"
+  hint="Red starts on squares 1 and 3. Blue starts on squares 7 and 9. End with blue on squares 1 and 9, red on squares 3 and 7."
+/>
+
+Take your time. Try short sequences and long ones. If you find yourself
+retracing your steps, that is not a sign that you are losing — quite the
+opposite. The patterns you notice, and the patterns you *cannot* seem to find,
+are both telling you something about how the nine squares are wired together.
+On the next page we make that wiring explicit, and the puzzle dissolves.

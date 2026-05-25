@@ -1,0 +1,48 @@
+---
+// A graph G (here the 5-cycle) beside its complement (here the "pentagram"):
+// together they account for every edge of K_5.
+interface Props { caption?: string; }
+const { caption } = Astro.props;
+
+function pentagon(cx: number, cy: number, r: number) {
+  return [90, 162, 234, 306, 18].map((a) => {
+    const t = (a * Math.PI) / 180;
+    return [
+      +(cx + r * Math.cos(t)).toFixed(1),
+      +(cy - r * Math.sin(t)).toFixed(1),
+    ] as [number, number];
+  });
+}
+const L = pentagon(110, 80, 58);
+const R = pentagon(330, 80, 58);
+const ring = [0, 1, 2, 3, 4];
+---
+<figure class="not-prose my-8 flex flex-col items-center">
+  <svg viewBox="0 0 440 175" width="440" class="max-w-full" role="img" aria-label="A graph and its complement">
+    <!-- G: the 5-cycle (pentagon perimeter) -->
+    <g stroke="var(--ink)" stroke-width="2" stroke-linecap="round" opacity="0.6">
+      {ring.map((i) => {
+        const p = L[i], q = L[(i + 1) % 5];
+        return <line x1={p[0]} y1={p[1]} x2={q[0]} y2={q[1]} />;
+      })}
+    </g>
+    <!-- complement: the five diagonals (pentagram) -->
+    <g stroke="var(--accent)" stroke-width="2" stroke-linecap="round" opacity="0.75">
+      {ring.map((i) => {
+        const p = R[i], q = R[(i + 2) % 5];
+        return <line x1={p[0]} y1={p[1]} x2={q[0]} y2={q[1]} />;
+      })}
+    </g>
+    <g fill="var(--ink)">
+      {L.map(([x, y]) => <circle cx={x} cy={y} r="5.5" />)}
+      {R.map(([x, y]) => <circle cx={x} cy={y} r="5.5" />)}
+    </g>
+    <g fill="var(--muted)" font-size="16" font-family="serif" font-style="italic">
+      <text x="110" y="168" text-anchor="middle">G</text>
+      <text x="330" y="168" text-anchor="middle">G</text>
+    </g>
+    <!-- overline for the complement label -->
+    <line x1="324" y1="151" x2="336" y2="151" stroke="var(--muted)" stroke-width="1.5" />
+  </svg>
+  {caption && <figcaption class="text-sm text-[var(--muted)] mt-2 max-w-lg text-center">{caption}</figcaption>}
+</figure>

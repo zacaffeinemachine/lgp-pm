@@ -1,0 +1,109 @@
+---
+layout: ../../layouts/Chapter.astro
+title: Degree and the Handshake Lemma
+order: 6
+chapter: appendix
+chapterTitle: Appendix — A Primer on Graphs
+blurb: Count the edges at each vertex, add them up, and you have counted every edge exactly twice.
+description: The degree of a vertex, the average degree, and the handshake lemma with its count-twice proof and the even-number-of-odd-vertices corollary.
+---
+import Lecture from "../../components/lecture/Lecture.astro";
+import Beat from "../../components/lecture/Beat.astro";
+import Summary from "../../components/lecture/Summary.astro";
+import Detail from "../../components/lecture/Detail.astro";
+import SampleGraph from "../../components/graphs/SampleGraph.astro";
+import DegreeSum from "../../components/widgets/DegreeSum.tsx";
+
+The single most useful number attached to a vertex is the count of edges that
+touch it. From that one number flows the first genuine theorem of graph theory.
+
+<Lecture>
+
+<Beat>
+<Summary>
+
+The **degree** $\deg(v)$ is the number of edges at $v$; the **average degree** is $\bar d = \tfrac1n \sum_v \deg(v)$.
+
+</Summary>
+<Detail>
+
+> The **degree** of a vertex $v$, written $\deg(v)$, is the number of edges
+> incident to $v$ — equivalently, the number of vertices adjacent to $v$. The
+> **average degree** of $G$ is
+> $$ \bar d = \frac{1}{n} \sum_{v \in V} \deg(v), \qquad n = \abs{V}. $$
+
+For our running example the degrees are $\deg(a) = 2$, $\deg(b) = 3$,
+$\deg(c) = 3$, $\deg(d) = 2$, $\deg(e) = 2$. They sum to $12$ — which is exactly
+twice the six edges. That is not a coincidence.
+
+<SampleGraph labels="degrees" caption="The same graph, each vertex labelled by its degree. The degrees sum to 2 + 3 + 3 + 2 + 2 = 12, twice the number of edges." />
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+**Handshake lemma** — in every graph, $\sum_{v} \deg(v) = 2\abs{E}$.
+
+</Summary>
+<Detail>
+
+> **Handshake lemma.** For any graph $G = (V, E)$,
+> $$ \sum_{v \in V} \deg(v) = 2\abs{E}. $$
+
+The proof is a clean *count two ways*. Count the **incident pairs** $(v, e)$ —
+a vertex $v$ together with an edge $e$ that touches it.
+
+- Group by vertex. Each vertex $v$ sits in $\deg(v)$ incident pairs, so the
+  total is $\sum_{v} \deg(v)$.
+- Group by edge. Each edge $e = \set{u, w}$ touches exactly two vertices, so it
+  sits in exactly $2$ incident pairs, giving a total of $2\abs{E}$.
+
+Both expressions count the same set of pairs, so they are equal. Build any graph
+in the widget below: as you click edges in and out, the degree sum and $2\abs{E}$
+stay locked together, because each edge adds $1$ to two different degrees.
+
+<DegreeSum client:visible />
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+A corollary the name suggests: the number of **odd-degree** vertices is even.
+
+</Summary>
+<Detail>
+
+At a party where each handshake involves two people, the total number of hands
+shaken — summed over all guests — is twice the number of handshakes, hence even.
+The same identity has a tidy consequence.
+
+Since $\sum_v \deg(v) = 2\abs{E}$ is even, the odd terms in the sum must pair up:
+**the number of vertices of odd degree is even.** No graph has exactly one
+odd-degree vertex, or exactly three. (This lemma is, historically, where graph
+theory began — Euler used it on the bridges of Königsberg in 1736.)
+
+</Detail>
+</Beat>
+
+<Beat full>
+<Summary>
+
+**Exercises**
+
+</Summary>
+<Detail>
+<div class="exercises">
+
+1. Verify the handshake lemma for the cycle $C_5$: write out all five degrees and check the sum equals $2\abs{E}$.
+2. A graph has $10$ vertices, each of degree $3$. How many edges does it have?
+3. Can a graph have degrees $1, 1, 2, 3$ (one vertex of each listed degree)? Explain using the corollary.
+
+</div>
+</Detail>
+</Beat>
+
+</Lecture>
