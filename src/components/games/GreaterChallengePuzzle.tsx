@@ -99,7 +99,12 @@ export default function GreaterChallengePuzzle({ title, hint }: Props) {
 
   const submitRiddle = () => {
     const normalized = riddleAnswer.trim().toLowerCase();
-    if (normalized === "face" || normalized === "faces") {
+    if (
+      normalized === "fallacy" ||
+      normalized === "gambler's fallacy" ||
+      normalized === "gamblers fallacy" ||
+      normalized === "the gambler's fallacy"
+    ) {
       setGraphUnlocked(true);
       setRiddleOpen(false);
       setRiddleError(false);
@@ -242,12 +247,12 @@ export default function GreaterChallengePuzzle({ title, hint }: Props) {
             className="w-full max-w-md p-4 rounded-lg border border-[var(--rule)] bg-[var(--surface)]"
           >
             <p className="text-sm mb-3">
-              In the shinigami's dreadful gift, a name alone will not kill. The
-              writer must summon, in the theatre of the mind, that which the
-              name adorns — a single portrait, clear enough for the god of
-              death to recognise. Without this second vision, every page of
-              the cursed ledger is dead ink, and no soul falls. In a single
-              word: what must the writer picture?
+              The wheel has come up red nine spins in a row. The crowd lunges
+              to stake everything on black, certain the colour is now
+              &ldquo;owed.&rdquo; But the wheel keeps no ledger and pays no
+              debts — a tenth red is exactly as likely as ever, and the table
+              bleeds them dry all the same. In a single word: name the
+              comforting error that empties their pockets.
               <br />
               <em className="text-[var(--muted)]">One word.</em>
             </p>
@@ -279,8 +284,8 @@ export default function GreaterChallengePuzzle({ title, hint }: Props) {
             </form>
             {riddleError && (
               <p className="text-xs mt-2" style={{ color: "var(--accent)" }}>
-                Not quite — recall the rule that forces Light to hunt for
-                something before he can write.
+                Not quite — each spin is independent, so the belief that black
+                is now &ldquo;due&rdquo; is the gambler's ____.
               </p>
             )}
           </div>

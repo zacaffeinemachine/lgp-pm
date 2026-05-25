@@ -62,17 +62,18 @@ const VARIANTS: Record<Variant, VariantConfig> = {
     riddle: {
       prompt: (
         <>
-          In the bone-dry realm where the shinigami drift, one withered
-          fruit is prized above all others — Ryuk would trade a name in the
-          notebook for a single taste. Wrinkled, sweet, and coveted even by
-          gods of death: name this dessicated fruit of their dreary world.
+          Six chambers, a single live round, and one long spin of the
+          cylinder. The barrel rises to a temple, and a one-in-six verdict
+          is drawn from the squeeze of a trigger — the desperate call it a
+          test of nerve; a probabilist calls it a lone Bernoulli trial with
+          a fatal failure. Name the game.
           <br />
           <em className="text-[var(--muted)]">One word.</em>
         </>
       ),
-      answers: ["apple", "apples"],
+      answers: ["roulette", "russian roulette"],
       wrongHint:
-        "Not quite — think of what Ryuk craves on every page of the death god's ledger.",
+        "Not quite — six chambers, one bullet, a spin of the cylinder, and a one-in-six chance the trigger is the last thing you do.",
     },
   },
   rowpair: {
@@ -97,19 +98,18 @@ const VARIANTS: Record<Variant, VariantConfig> = {
     riddle: {
       prompt: (
         <>
-          A young genius finds a black notebook fallen from the sky. With it
-          he begins a secret crusade — judging criminals from the safety of
-          his study, striking them down by name alone. The world soon learns
-          of this invisible judge and christens him with a single word that
-          means &ldquo;killer&rdquo; in the tongue of the island that bore
-          him. By what name does the world come to know him?
+          Every week, millions surrender a coin for a string of numbers,
+          certain that fate must one day repay such faith. The expected
+          value of all that hope is a slow, arithmetic poverty — a levy, the
+          cynics say, on those who cannot count. Name the game that sells a
+          fortune it almost never pays.
           <br />
           <em className="text-[var(--muted)]">One word.</em>
         </>
       ),
-      answers: ["kira"],
+      answers: ["lottery", "lotto", "the lottery"],
       wrongHint:
-        "Not quite — this is the alias Light Yagami takes, the name whispered across every news broadcast in the series.",
+        "Not quite — a game of deeply negative expected value, sold one ticket of false hope at a time.",
     },
   },
   classical: {
@@ -134,19 +134,18 @@ const VARIANTS: Record<Variant, VariantConfig> = {
     riddle: {
       prompt: (
         <>
-          Among the shinigami, one bore a heart. Tall as a mast, her body all
-          bone and silver, she loved a human girl in defiance of every rule
-          her kind obeys. When the detectives' noose tightened around her
-          beloved, she took up her ledger and struck down two men to save
-          her — and was undone on the instant, crumbling to dust the moment
-          the ink dried. What was her name?
+          He doubles his stake after every loss, sure that a single win will
+          set everything right. But against a house with bottomless coffers
+          the arithmetic is pitiless: play long enough and the probability
+          he walks away with nothing climbs to exactly one. Name the
+          gambler's certain end.
           <br />
           <em className="text-[var(--muted)]">One word.</em>
         </>
       ),
-      answers: ["rem"],
+      answers: ["ruin", "gambler's ruin", "gamblers ruin", "the gambler's ruin"],
       wrongHint:
-        "Not quite — the answer is the tall shinigami who gave her notebook to Misa and who was undone by her own love.",
+        "Not quite — against an infinitely rich opponent the chance of total loss is one. Name that guaranteed fate.",
     },
   },
 };
