@@ -57,13 +57,15 @@ Site/
 │   │   │   ├── Summary.astro        #   terse headline (shown in both modes)
 │   │   │   └── Detail.astro         #   full content (Detailed mode only)
 │   │   ├── widgets/*.tsx           # React interactive figures
-│   │   └── games/*.tsx             # React games (currently PenneysGame)
+│   │   ├── games/*.tsx             # React games (PenneysGame; Knight/SwapKnights puzzles)
+│   │   └── graphs/*.astro          # static SVG graph figures (appendix)
 │   ├── pages/
-│   │   ├── index.astro             # home; hand-curated `allChapters` day list
+│   │   ├── index.astro             # home; hand-curated `allChapters` (day + appendix)
 │   │   ├── day1/
 │   │   │   ├── index.astro         # Day 1 landing (auto-lists visible sub-pages)
 │   │   │   └── *.mdx               # the lecture pages
-│   │   └── day2/                   # same shape (index.astro + 8 *.mdx)
+│   │   ├── day2/                   # same shape (index.astro + 8 *.mdx)
+│   │   └── appendix/               # "A Primer on Graphs" (index.astro + 12 *.mdx); not a "Day"
 │   └── styles/global.css           # theming, .prose, lecture UI, exercises, coins
 └── dist/                           # build output (git-ignored content; do not edit)
 ```
@@ -91,6 +93,21 @@ Site/
    The `Chapter.astro` layout reads frontmatter from `Astro.props.frontmatter`,
    builds the in-day TOC and prev/next from sibling `.mdx` files, and renders the
    "Not yet released" wall when the page isn't in the visibility list.
+
+### Appendices (non-numbered chapters)
+
+A chapter can be an **appendix** instead of a "Day". The only differences:
+
+- In `index.astro`, each `allChapters` entry carries a `kind` (`"day"` |
+  `"appendix"`). Days are numbered `Day 1, Day 2, …`; appendices show an
+  `"Appendix"` kicker. Day numbering counts only `kind: "day"` entries, so an
+  appendix anywhere in the list does not shift Day numbers. `ChapterCard.astro`
+  takes a generic `kicker` string (no longer a `number`).
+- `Chapter.astro` swaps the breadcrumb root ("Days" → "Home") and the TOC label
+  ("In this day" → "In this appendix") when `frontmatter.chapter === "appendix"`.
+- The landing page (`pages/appendix/index.astro`) and each `*.mdx` set
+  `chapter: appendix`, `chapterTitle: Appendix — A Primer on Graphs`. Otherwise
+  identical to a day: same `<Lecture>`/`<Beat>` mechanism, same visibility gating.
 
 ## The lecture mechanism
 
@@ -136,8 +153,10 @@ follow dark mode. **Keep this table current.**
 | `widgets/RandomVariableExplorer.tsx`   | day2/random-variables                |
 | `widgets/ExpectationSim.tsx`           | day2/expectation                     |
 | `widgets/LinearitySim.tsx`             | day2/linearity                       |
-| `widgets/DegreeSum.tsx`                | day2/degree-sum                      |
+| `widgets/DegreeSum.tsx`                | day2/degree-sum, appendix/degree-and-handshake |
 | `widgets/ProductRule.tsx`              | day2/independence                    |
+| `games/KnightPuzzle.tsx`               | appendix/knight-moves                |
+| `games/SwapKnightsPuzzle.tsx`          | appendix/swap-knights, appendix/classical |
 
 (Day 2's `indicators`, `distribution`, and `key-move` pages are text-only by design.)
 
@@ -179,14 +198,22 @@ Prefer `npm run build` to catch errors before pushing (push = deploy).
 - **Day 1 — Foundations:** fully built, all 6 pages released
   (`why-formal-language`, `sample-spaces-and-events`, `probability-measures`,
   `uniform-measure`, `independence`, `putting-it-together`).
-- **Day 2 — Random Variables, Expectation, and Linearity:** fully built but
-  **currently hidden** pending review — `"day2"` is commented out of
-  `VISIBLE_CHAPTERS` (its pages remain listed in `VISIBLE_PAGES`, so releasing is
-  a one-line uncomment). All 8 pages exist (`random-variables`, `expectation`,
+- **Day 2 — Random Variables, Expectation, and Linearity:** fully built and
+  **released** — `"day2"` is active in `VISIBLE_CHAPTERS`. All 8 pages exist
+  (`random-variables`, `expectation`,
   `indicators`, `linearity`, `distribution`, `degree-sum`, `key-move`,
   `independence`): one page per section of `Days/Day2.tex`, each closing with that
   section's three exercises.
 - **Days 3–5 + Bonus:** not built yet (placeholder comment in `index.astro`).
+- **Appendix — A Primer on Graphs:** fully built and **released** —
+  `"appendix"` is active in `VISIBLE_CHAPTERS`; all 12 pages are live. Three ported Guarini
+  knight-puzzle pages (`knight-moves`, `swap-knights`, `classical`) + a bridge
+  page (`hidden-graph`) revealing the 3×3 knight graph is a cycle $C_8$, then
+  eight lecture pages mirroring `Appendices/Graphs.tex` (`graphs-vertices-edges`,
+  `degree-and-handshake`, `complete-paths-cycles`, `bipartite-graphs`,
+  `subgraphs-and-complements`, `cliques-and-independent-sets`, `edge-colourings`,
+  `glossary`). Figures are static SVG `components/graphs/*.astro`; the puzzle
+  boards reuse the ported `games/{KnightPuzzle,SwapKnightsPuzzle}.tsx`.
 - The downloadable `WorkshopNotes.pdf` is served from `public/notes/` and linked
   in every page header (`Base.astro`).
 

@@ -23,7 +23,8 @@
 
 export const VISIBLE_CHAPTERS: readonly string[] = [
   "day1",
-  // "day2",  // built and ready — uncomment to release Day 2 to students.
+  "day2",  // released.
+  "appendix",  // released — the graph primer.
 ];
 
 export const VISIBLE_PAGES: readonly string[] = [
@@ -41,6 +42,19 @@ export const VISIBLE_PAGES: readonly string[] = [
   "day2/degree-sum",
   "day2/key-move",
   "day2/independence",
+  // Appendix — A Primer on Graphs (gated by the commented "appendix" chapter above).
+  "appendix/knight-moves",
+  "appendix/swap-knights",
+  "appendix/classical",
+  "appendix/hidden-graph",
+  "appendix/graphs-vertices-edges",
+  "appendix/degree-and-handshake",
+  "appendix/complete-paths-cycles",
+  "appendix/bipartite-graphs",
+  "appendix/subgraphs-and-complements",
+  "appendix/cliques-and-independent-sets",
+  "appendix/edge-colourings",
+  "appendix/glossary",
 ];
 
 export function isChapterVisible(slug: string): boolean {
