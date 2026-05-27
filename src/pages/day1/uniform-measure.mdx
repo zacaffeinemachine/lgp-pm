@@ -5,7 +5,7 @@ order: 4
 chapter: day1
 chapterTitle: Day 1 — Foundations
 blurb: When every outcome is equally likely, probability becomes counting — and the birthday problem shows how surprising counting can be.
-description: The uniform measure as favourable-over-total, with dice and urn examples and the birthday problem worked in full.
+description: The uniform measure as favourable-over-total, with dice, urn, and shuffled-deck examples and the birthday problem worked in full.
 ---
 import Lecture from "../../components/lecture/Lecture.astro";
 import Beat from "../../components/lecture/Beat.astro";
@@ -60,6 +60,61 @@ $\tfrac{5\cdot4}{8\cdot7} = \tfrac{5}{14}$ — the same, as it must.
 <Beat>
 <Summary>
 
+Warm-up — a $3$-card deck has $3! = 6$ orderings; write them out and read off $\P(\text{Ace on top}) = 1/3$.
+
+</Summary>
+<Detail>
+
+**A three-card deck, by hand.** Before trusting factorials, watch "every ordering equally
+likely" on a deck small enough to write out. Shuffle an Ace, a King, and a Queen — the
+sample space is all $3! = 6$ orderings,
+
+$$
+\mathrm{AKQ},\quad \mathrm{AQK},\quad \mathrm{KAQ},\quad \mathrm{KQA},\quad \mathrm{QAK},\quad \mathrm{QKA},
+$$
+
+each of probability $1/6$.
+
+*Ace on top?* Two orderings ($\mathrm{AKQ}, \mathrm{AQK}$) start with the Ace, so
+$\P = 2/6 = 1/3$ — the $1/n$ that becomes $1/52$ on a full deck. *Ace before the King?*
+Three of the six ($\mathrm{AKQ}, \mathrm{AQK}, \mathrm{QAK}$), so $\P = 1/2$: a fair shuffle
+has no reason to prefer one order of the two to the other.
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
+A shuffled deck — $\Omega = S_{52}$, so $\P(\text{top card is } A\spadesuit) = 1/52$ and $\P(\text{top two are aces}) = 1/221$.
+
+</Summary>
+<Detail>
+
+**A shuffled deck.** Shuffle $52$ cards so every ordering is equally likely: $\Omega$ is
+the set of all orderings, $\abs{\Omega} = 52!$. Most questions become a permutation count.
+
+*Top card the Ace of Spades?* Fix $A\spadesuit$ on top and arrange the other $51$ cards
+below it in $51!$ ways:
+
+$$
+\P(\text{top card is } A\spadesuit) = \frac{51!}{52!} = \frac{1}{52}.
+$$
+
+Nothing favours that card or that slot — **any** named card is equally likely in **any**
+named position. *Top two cards both aces?* There are $4 \cdot 3$ ways to seat an ordered
+pair of aces up top and $50!$ ways to fill the rest:
+
+$$
+\P(\text{top two are aces}) = \frac{4 \cdot 3 \cdot 50!}{52!} = \frac{12}{52 \cdot 51} = \frac{1}{221}.
+$$
+
+</Detail>
+</Beat>
+
+<Beat>
+<Summary>
+
 The birthday problem — $30$ students: count the complement "all distinct" to get $\P(\text{some share}) \approx 0.706$.
 
 </Summary>
@@ -97,6 +152,7 @@ more likely** than the size of the room suggests.
 1. Roll a fair die twice. Find $\P(\text{the sum is } 5)$ and $\P(\text{the sum is even})$.
 2. A box holds $4$ red and $2$ green balls; draw two without replacement. Find $\P(\text{both are red})$.
 3. A number is chosen uniformly at random from $\set{1, 2, \dots, 10}$. Find $\P(\text{it is prime})$.
+4. A standard $52$-card deck is shuffled uniformly at random. Find $\P(\text{the bottom card is a spade})$ and $\P(\text{the top two cards are both spades})$.
 
 </div>
 </Detail>
